@@ -1,4 +1,4 @@
-# Obsidian Dynamic Table Of Contents
+# Obsidian Automatic Table Of Contents
 
 > An Obsidian plugin to create a table of contents in a note, that updates itself when the note changes
 
@@ -15,10 +15,10 @@ Clone the plugin in your `.obsidian/plugins` directory:
 
 ```shell
 cd /path/to/your/vault/.obsidian/plugins
-git clone git@github.com:johansatge/obsidian-dynamic-table-of-contents.git
+git clone git@github.com:johansatge/obsidian-automatic-table-of-contents.git
 ```
 
-Alternatively, download the [latest release](https://github.com/johansatge/obsidian-dynamic-table-of-contents/releases) and unzip it in your `.obsidian/plugins` directory.
+Alternatively, download the [latest release](https://github.com/johansatge/obsidian-automatic-table-of-contents/releases) and unzip it in your `.obsidian/plugins` directory.
 
 ## Usage
 

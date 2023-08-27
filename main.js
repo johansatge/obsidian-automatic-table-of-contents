@@ -31,12 +31,12 @@ module.exports = class extends Plugin {
       context.addChild(new Renderer(this.app, element, context.sourcePath, sourceText))
     })
     this.addCommand({
-      id: 'insert-dynamic-table-of-contents',
+      id: 'insert-automatic-table-of-contents',
       name: 'Insert table of contents',
       editorCallback: onInsertToc,
     })
     this.addCommand({
-      id: 'insert-dynamic-table-of-contents-docs',
+      id: 'insert-automatic-table-of-contents-docs',
       name: 'Insert table of contents (documented)',
       editorCallback: onInsertTocWithDocs,
     })
@@ -161,5 +161,5 @@ function parseOptionFromSourceLine(line) {
 }
 
 function debug() {
-  console.log(`%cDynamic Table Of Contents`, 'color: orange; font-weight: bold', ...arguments)
+  console.log(`%cAutomatic Table Of Contents`, 'color: orange; font-weight: bold', ...arguments)
 }

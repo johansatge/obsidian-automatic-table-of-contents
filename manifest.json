@@ -1,6 +1,6 @@
 {
-  "id": "dynamic-table-of-contents",
-  "name": "Dynamic Table Of Contents",
+  "id": "automatic-table-of-contents",
+  "name": "Automatic Table Of Contents",
   "version": "1.0.0",
   "minAppVersion": "1.3.0",
   "description": "Create a table of contents in a note, that updates itself when the note changes",
