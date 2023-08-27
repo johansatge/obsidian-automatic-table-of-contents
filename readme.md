@@ -26,7 +26,8 @@ Insert a codeblock with the `table-of-contents` syntax.
 
 ````
 ```table-of-contents
-option: value
+option1: value1
+option2: value2
 ```
 ````
 
