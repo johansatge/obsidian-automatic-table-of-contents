@@ -155,7 +155,7 @@ function parseOptionFromSourceLine(line) {
   }
   if (optionParams && optionParams.type === 'string') {
     if (!optionParams.values.includes(possibleValue)) throw valueError
-    return { ame: possibleName, value: possibleValue }
+    return { name: possibleName, value: possibleValue }
   }
   return null
 }
