@@ -4,7 +4,7 @@
 
 ---
 
-@todo gif
+![demo](images/demo.gif)
 
 - [Installation](#installation)
 - [Usage](#usage)
@@ -22,7 +22,27 @@ Alternatively, download the [latest release](https://github.com/johansatge/obsid
 
 ## Usage
 
-@todo
+Insert a codeblock with the `table-of-contents` syntax.
+
+````
+```table-of-contents
+option: value
+```
+````
+
+Alternatively, two commands are available in the command palette:
+
+- Insert table of contents
+- Insert table of contents (documented)
+
+The following options are available:
+
+| Option | Default value | Description |
+| --- | --- | --- |
+| `style` | `nestedList` | Table of contents style (can be `nestedList` or `inlineFirstLevel`) |
+| `maxLevel` | `0` | Include headings up to the speficied level (`0` for no limit) |
+| `includeLinks` | `true` | Make headings clickable |
+| `debugInConsole` | `false` | Print debug info in Obsidian console |
 
 ## Changelog
 
