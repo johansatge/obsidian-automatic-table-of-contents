@@ -51,6 +51,7 @@ This project uses [semver](http://semver.org/).
 
 | Version | Date | Notes |
 | --- | --- | --- |
+| `1.0.1` | 2023-09-09 | Fix reference to global `App` instance |
 | `1.0.0` | 2023-08-27 | Initial version |
 
 ## License
