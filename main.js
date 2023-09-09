@@ -83,7 +83,7 @@ class Renderer extends MarkdownRenderChild {
       const options = parseOptionsFromSourceText(this.sourceText)
       if (options.debugInConsole) debug('Options', options)
 
-      const metadata = app.metadataCache.getCache(this.sourcePath)
+      const metadata = this.app.metadataCache.getCache(this.sourcePath)
       const headings = metadata && metadata.headings ? metadata.headings : []
       if (options.debugInConsole) debug('Headings', headings)
 
