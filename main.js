@@ -120,7 +120,10 @@ function getMarkdownNestedListFromHeadings(headings, options) {
 function getMarkdownInlineFirstLevelFromHeadings(headings, options) {
   const items = headings
     .filter((heading) => heading.level === 1)
-    .map((heading) => options.includeLinks ? `[[#${heading.heading}|${heading.display}]]` : heading.heading)
+    .map((heading) => {
+      const label = heading.display || heading.heading
+      return options.includeLinks ? `[[#${heading.heading}|${label}]]` : heading.heading
+    })
   return items.length > 0 ? items.join(' | ') : null
 }
 
