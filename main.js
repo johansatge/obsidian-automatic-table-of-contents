@@ -1,4 +1,15 @@
-const { Plugin, MarkdownRenderer, MarkdownRenderChild } = require('obsidian')
+let Plugin = class {}
+let MarkdownRenderer = {}
+let MarkdownRenderChild = class {}
+
+const isObsidian = !process.env.JEST_WORKER_ID
+
+if (isObsidian) {
+  const obsidian = require('obsidian')
+  Plugin = obsidian.Plugin
+  MarkdownRenderer = obsidian.MarkdownRenderer
+  MarkdownRenderChild = obsidian.MarkdownRenderChild
+}
 
 const codeblockId = 'table-of-contents'
 const availableOptions = {
@@ -25,7 +36,7 @@ const availableOptions = {
   },
 }
 
-module.exports = class extends Plugin {
+class ObsidianAutomaticTableOfContents extends Plugin {
   async onload() {
     this.registerMarkdownCodeBlockProcessor(codeblockId, (sourceText, element, context) => {
       context.addChild(new Renderer(this.app, element, context.sourcePath, sourceText))
@@ -87,14 +98,7 @@ class Renderer extends MarkdownRenderChild {
       const headings = metadata && metadata.headings ? metadata.headings : []
       if (options.debugInConsole) debug('Headings', headings)
 
-      const markdownHandlersByStyle = {
-        nestedList: getMarkdownNestedListFromHeadings,
-        inlineFirstLevel: getMarkdownInlineFirstLevelFromHeadings,
-      }
-      let markdown = markdownHandlersByStyle[options.style](headings, options)
-      if (markdown === null) {
-        markdown = '_Table of contents: no headings found_'
-      }
+      const markdown = getMarkdownFromHeadings(headings, options)
       if (options.debugInConsole) debug('Markdown', markdown)
   
       this.element.empty()
@@ -104,6 +108,15 @@ class Renderer extends MarkdownRenderChild {
       MarkdownRenderer.renderMarkdown(readableError, this.element, this.sourcePath, this)
     }
   }
+}
+
+function getMarkdownFromHeadings(headings, options) {
+  const markdownHandlersByStyle = {
+    nestedList: getMarkdownNestedListFromHeadings,
+    inlineFirstLevel: getMarkdownInlineFirstLevelFromHeadings,
+  }
+  const markdown = markdownHandlersByStyle[options.style](headings, options)
+  return markdown || '_Table of contents: no headings found_'
 }
 
 function getMarkdownNestedListFromHeadings(headings, options) {
@@ -127,7 +140,7 @@ function getMarkdownInlineFirstLevelFromHeadings(headings, options) {
   return items.length > 0 ? items.join(' | ') : null
 }
 
-function parseOptionsFromSourceText(sourceText) {
+function parseOptionsFromSourceText(sourceText = '') {
   const options = {}
   Object.keys(availableOptions).forEach((option) => {
     options[option] = availableOptions[option].default
@@ -166,4 +179,13 @@ function parseOptionFromSourceLine(line) {
 
 function debug() {
   console.log(`%cAutomatic Table Of Contents`, 'color: orange; font-weight: bold', ...arguments)
+}
+
+if (isObsidian) {
+  module.exports = ObsidianAutomaticTableOfContents
+} else {
+  module.exports = {
+    parseOptionsFromSourceText,
+    getMarkdownFromHeadings,
+  }
 }
