@@ -121,11 +121,12 @@ function getMarkdownFromHeadings(headings, options) {
 
 function getMarkdownNestedListFromHeadings(headings, options) {
   const lines = []
+  const minLevel = Math.min(...headings.map((heading) => heading.level))
   headings.forEach((heading) => {
     if (options.maxLevel > 0 && heading.level > options.maxLevel) return
     const label = heading.display || heading.heading
     const text = options.includeLinks ? `[[#${heading.heading}|${label}]]` : heading.heading
-    lines.push(`${'\t'.repeat(heading.level - 1)}- ${text}`)
+    lines.push(`${'\t'.repeat(heading.level - minLevel)}- ${text}`)
   })
   return lines.length > 0 ? lines.join('\n') : null
 }
