@@ -1,0 +1,9 @@
+{
+  "private": true,
+  "scripts": {
+    "test": "jest --config=test/jest.config.js"
+  },
+  "devDependencies": {
+    "jest": "^29.7.0"
+  }
+}

@@ -1,5 +1,8 @@
 # Obsidian Automatic Table Of Contents
 
+[![Version](https://img.shields.io/github/v/release/johansatge/obsidian-automatic-table-of-contents)](https://github.com/johansatge/obsidian-automatic-table-of-contents/releases)
+[![Test](https://github.com/johansatge/obsidian-automatic-table-of-contents/actions/workflows/test.yml/badge.svg)](https://github.com/johansatge/obsidian-automatic-table-of-contents/actions)
+
 > An Obsidian plugin to create a table of contents in a note, that updates itself when the note changes
 
 ---
