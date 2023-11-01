@@ -54,6 +54,7 @@ This project uses [semver](http://semver.org/).
 
 | Version | Date | Notes |
 | --- | --- | --- |
+| `1.0.5` | 2023-11-01 | Fix plugin activation on mobile (fix #17) |
 | `1.0.4` | 2023-10-31 | Support pages with no first level headings (fix #6) |
 | `1.0.3` | 2023-09-30 | Fix readme |
 | `1.0.2` | 2023-09-25 | Fix output sometimes displaying `undefined` headings |
