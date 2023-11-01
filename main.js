@@ -2,9 +2,7 @@ let Plugin = class {}
 let MarkdownRenderer = {}
 let MarkdownRenderChild = class {}
 
-const isObsidian = !process.env.JEST_WORKER_ID
-
-if (isObsidian) {
+if (isObsidian()) {
   const obsidian = require('obsidian')
   Plugin = obsidian.Plugin
   MarkdownRenderer = obsidian.MarkdownRenderer
@@ -182,7 +180,14 @@ function debug() {
   console.log(`%cAutomatic Table Of Contents`, 'color: orange; font-weight: bold', ...arguments)
 }
 
-if (isObsidian) {
+function isObsidian() {
+  if (typeof process !== 'object') {
+    return true // Obsidian mobile doesn't have a global process object
+  }
+  return !process.env || !process.env.JEST_WORKER_ID // Jest runtime is not Obsidian
+}
+
+if (isObsidian()) {
   module.exports = ObsidianAutomaticTableOfContents
 } else {
   module.exports = {
