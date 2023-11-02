@@ -4,7 +4,7 @@ const {
 } = require('../main.js')
 
 const testStandardHeadings = [
-  { heading: 'Title 1 level 1', level: 1 },
+  { heading: 'Title [1] | level 1', level: 1 },
   { heading: 'Title 1 level 2', level: 2 },
   { heading: 'Title 1 level 3', level: 3 },
   { heading: 'Title 2 level 1', level: 1 },
@@ -26,12 +26,12 @@ describe('Headings', () => {
     const options = parseOptionsFromSourceText('')
     const md = getMarkdownFromHeadings(testStandardHeadings, options)
     const expectedMd = sanitizeMd(`
-- [[#Title 1 level 1|Title 1 level 1]]
-  - [[#Title 1 level 2|Title 1 level 2]]
-    - [[#Title 1 level 3|Title 1 level 3]]
-- [[#Title 2 level 1|Title 2 level 1]]
-- [[#Title 3 level 1|Title 3 level 1]]
-  - [[#Title 3 level 2|Title 3 level 2]]
+- [[#Title {1} - level 1]]
+  - [[#Title 1 level 2]]
+    - [[#Title 1 level 3]]
+- [[#Title 2 level 1]]
+- [[#Title 3 level 1]]
+  - [[#Title 3 level 2]]
 `)
     expect(md).toEqual(expectedMd)
   })
@@ -40,12 +40,12 @@ describe('Headings', () => {
     const options = parseOptionsFromSourceText('')
     const md = getMarkdownFromHeadings(testHeadingsWithoutFirstLevel, options)
     const expectedMd = sanitizeMd(`
-- [[#Title 1 level 2|Title 1 level 2]]
-  - [[#Title 1 level 3|Title 1 level 3]]
-    - [[#Title 1 level 4|Title 1 level 4]]
-- [[#Title 2 level 2|Title 2 level 2]]
-- [[#Title 3 level 2|Title 3 level 2]]
-  - [[#Title 3 level 3|Title 3 level 3]]
+- [[#Title 1 level 2]]
+  - [[#Title 1 level 3]]
+    - [[#Title 1 level 4]]
+- [[#Title 2 level 2]]
+- [[#Title 3 level 2]]
+  - [[#Title 3 level 3]]
 `)
     expect(md).toEqual(expectedMd)
   })
@@ -55,11 +55,11 @@ describe('Headings', () => {
     options.maxLevel = 2
     const md = getMarkdownFromHeadings(testStandardHeadings, options)
     const expectedMd = sanitizeMd(`
-- [[#Title 1 level 1|Title 1 level 1]]
-  - [[#Title 1 level 2|Title 1 level 2]]
-- [[#Title 2 level 1|Title 2 level 1]]
-- [[#Title 3 level 1|Title 3 level 1]]
-  - [[#Title 3 level 2|Title 3 level 2]]
+- [[#Title {1} - level 1]]
+  - [[#Title 1 level 2]]
+- [[#Title 2 level 1]]
+- [[#Title 3 level 1]]
+  - [[#Title 3 level 2]]
 `)
     expect(md).toEqual(expectedMd)
   })
@@ -69,7 +69,7 @@ describe('Headings', () => {
     options.includeLinks = false
     const md = getMarkdownFromHeadings(testStandardHeadings, options)
     const expectedMd = sanitizeMd(`
-- Title 1 level 1
+- Title [1] | level 1
   - Title 1 level 2
     - Title 1 level 3
 - Title 2 level 1
@@ -84,7 +84,7 @@ describe('Headings', () => {
     options.style = 'inlineFirstLevel'
     const md = getMarkdownFromHeadings(testStandardHeadings, options)
     const expectedMd = sanitizeMd(`
-[[#Title 1 level 1|Title 1 level 1]] | [[#Title 2 level 1|Title 2 level 1]] | [[#Title 3 level 1|Title 3 level 1]]
+[[#Title {1} - level 1]] | [[#Title 2 level 1]] | [[#Title 3 level 1]]
 `)
     expect(md).toEqual(expectedMd)
   })
@@ -95,7 +95,7 @@ describe('Headings', () => {
     options.includeLinks = false
     const md = getMarkdownFromHeadings(testStandardHeadings, options)
     const expectedMd = sanitizeMd(`
-Title 1 level 1 | Title 2 level 1 | Title 3 level 1
+Title [1] | level 1 | Title 2 level 1 | Title 3 level 1
 `)
     expect(md).toEqual(expectedMd)
   })
