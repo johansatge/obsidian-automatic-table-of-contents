@@ -122,9 +122,7 @@ function getMarkdownNestedListFromHeadings(headings, options) {
   const minLevel = Math.min(...headings.map((heading) => heading.level))
   headings.forEach((heading) => {
     if (options.maxLevel > 0 && heading.level > options.maxLevel) return
-    const label = heading.display || heading.heading
-    const text = options.includeLinks ? `[[#${heading.heading}|${label}]]` : heading.heading
-    lines.push(`${'\t'.repeat(heading.level - minLevel)}- ${text}`)
+    lines.push(`${'\t'.repeat(heading.level - minLevel)}- ${getMarkdownHeading(heading, options)}`)
   })
   return lines.length > 0 ? lines.join('\n') : null
 }
@@ -133,10 +131,17 @@ function getMarkdownInlineFirstLevelFromHeadings(headings, options) {
   const items = headings
     .filter((heading) => heading.level === 1)
     .map((heading) => {
-      const label = heading.display || heading.heading
-      return options.includeLinks ? `[[#${heading.heading}|${label}]]` : heading.heading
+      return getMarkdownHeading(heading, options)
     })
   return items.length > 0 ? items.join(' | ') : null
+}
+
+function getMarkdownHeading(heading, options) {
+  if (options.includeLinks) {
+    const cleaned = heading.heading.replaceAll('|', '-').replaceAll('[', '{').replaceAll(']', '}')
+    return `[[#${cleaned}]]`
+  }
+  return heading.heading
 }
 
 function parseOptionsFromSourceText(sourceText = '') {
