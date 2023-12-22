@@ -50,6 +50,18 @@ describe('Headings', () => {
     expect(md).toEqual(expectedMd)
   })
 
+  test('Returns indented list with min level', () => {
+    const options = parseOptionsFromSourceText('')
+    options.minLevel = 2
+    const md = getMarkdownFromHeadings(testStandardHeadings, options)
+    const expectedMd = sanitizeMd(`
+- [[#Title 1 level 2]]
+  - [[#Title 1 level 3]]
+- [[#Title 3 level 2]]
+`)
+    expect(md).toEqual(expectedMd)
+  })
+
   test('Returns indented list with max level', () => {
     const options = parseOptionsFromSourceText('')
     options.maxLevel = 2

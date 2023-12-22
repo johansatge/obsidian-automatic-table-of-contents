@@ -6,6 +6,7 @@ describe('Options', () => {
     expect(options).toEqual({
        style: 'nestedList',
        includeLinks: true,
+       minLevel: 0,
        maxLevel: 0,
        debugInConsole: false,
     })
@@ -14,6 +15,7 @@ describe('Options', () => {
   test('Returns custom options if specified', () => {
     const optionsText = `
       style: inlineFirstLevel
+      minLevel: 1
       maxLevel: 2
       includeLinks: false
       debugInConsole: true
@@ -22,6 +24,7 @@ describe('Options', () => {
     expect(options).toEqual({
        style: 'inlineFirstLevel',
        includeLinks: false,
+       minLevel: 1,
        maxLevel: 2,
        debugInConsole: true,
     })
@@ -45,6 +48,14 @@ describe('Options', () => {
       try {
         const options = parseOptionsFromSourceText('style: someInvalidStyle')
         expect(options.style).toEqual('Should have thrown')
+      } catch(error) {
+        expect(error.message).toContain('Invalid value')
+      }
+    })
+    test('On minLevel', () => {
+      try {
+        const options = parseOptionsFromSourceText('minLevel: -1')
+        expect(options.minLevel).toEqual('Should have thrown')
       } catch(error) {
         expect(error.message).toContain('Invalid value')
       }
