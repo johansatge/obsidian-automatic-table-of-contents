@@ -70,6 +70,7 @@ This project uses [semver](http://semver.org/).
 
 | Version | Date | Notes |
 | --- | --- | --- |
+| `1.1.0` | 2024-01-03 | Introduce `minLevel` option ([@ras0q](https://github.com/ras0q)) (fix #11) |
 | `1.0.6` | 2023-11-02 | Escape special characters (fix #3) |
 | `1.0.5` | 2023-11-01 | Fix plugin activation on mobile (fix #17) |
 | `1.0.4` | 2023-10-31 | Support pages with no first level headings (fix #6) |
