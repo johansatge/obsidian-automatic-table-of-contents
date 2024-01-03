@@ -11,6 +11,9 @@
 
 - [Installation](#installation)
 - [Usage](#usage)
+- [Publish a new version](#publish-a-new-version)
+- [Changelog](#changelog)
+- [License](#license)
 
 ## Installation
 
@@ -48,6 +51,18 @@ The following options are available:
 | `maxLevel` | `0` | Include headings up to the specified level (`0` for no limit) |
 | `includeLinks` | `true` | Make headings clickable |
 | `debugInConsole` | `false` | Print debug info in Obsidian console |
+
+## Publish a new version
+
+- Push a commit with the new version number as message with:
+  - The relevant changelog in `README.md`
+  - The new version number in `manifest.json`
+- Tag the commit with the version number
+- Publish a [new GitHub release](https://github.com/johansatge/obsidian-automatic-table-of-contents/releases/new) with:
+  - The version number as title
+  - The changelog from `README.md` as description
+  - `main.js` and `manifest.json` as attachments
+  - _Set as the latest release_ checked
 
 ## Changelog
 
