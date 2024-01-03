@@ -20,12 +20,12 @@ const availableOptions = {
   minLevel: {
     type: 'number',
     default: 0,
-    comment: 'Include headings from the speficied level'
+    comment: 'Include headings from the specified level'
   },
   maxLevel: {
     type: 'number',
     default: 0,
-    comment: 'Include headings up to the speficied level',
+    comment: 'Include headings up to the specified level',
   },
   includeLinks: {
     type: 'boolean',
