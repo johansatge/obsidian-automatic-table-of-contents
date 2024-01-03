@@ -14,6 +14,7 @@
 - [Publish a new version](#publish-a-new-version)
 - [Changelog](#changelog)
 - [License](#license)
+- [Contributing](#contributing)
 
 ## Installation
 
@@ -82,3 +83,7 @@ This project uses [semver](http://semver.org/).
 ## License
 
 This project is released under the [MIT License](license.md).
+
+## Contributing
+
+Bug reports and feature requests are welcome! More details in the [contribution guidelines](CONTRIBUTING.md).
