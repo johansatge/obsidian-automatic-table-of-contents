@@ -17,6 +17,11 @@ const availableOptions = {
     values: ['nestedList', 'inlineFirstLevel'],
     comment: 'TOC style (nestedList|inlineFirstLevel)',
   },
+  minLevel: {
+    type: 'number',
+    default: 0,
+    comment: 'Include headings from the speficied level'
+  },
   maxLevel: {
     type: 'number',
     default: 0,
@@ -98,7 +103,7 @@ class Renderer extends MarkdownRenderChild {
 
       const markdown = getMarkdownFromHeadings(headings, options)
       if (options.debugInConsole) debug('Markdown', markdown)
-  
+
       this.element.empty()
       MarkdownRenderer.renderMarkdown(markdown, this.element, this.sourcePath, this)
     } catch(error) {
@@ -119,8 +124,11 @@ function getMarkdownFromHeadings(headings, options) {
 
 function getMarkdownNestedListFromHeadings(headings, options) {
   const lines = []
-  const minLevel = Math.min(...headings.map((heading) => heading.level))
+  const minLevel = options.minLevel > 0
+    ? options.minLevel
+    : Math.min(...headings.map((heading) => heading.level))
   headings.forEach((heading) => {
+    if (heading.level < minLevel) return
     if (options.maxLevel > 0 && heading.level > options.maxLevel) return
     lines.push(`${'\t'.repeat(heading.level - minLevel)}- ${getMarkdownHeading(heading, options)}`)
   })
