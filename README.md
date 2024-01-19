@@ -29,7 +29,7 @@ Alternatively, download the [latest release](https://github.com/johansatge/obsid
 
 ## Usage
 
-Insert a codeblock with the `table-of-contents` syntax.
+Insert a codeblock with the `table-of-contents` (or its short version `toc`) syntax.
 
 ````
 ```table-of-contents
