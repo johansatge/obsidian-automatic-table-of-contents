@@ -71,6 +71,7 @@ This project uses [semver](http://semver.org/).
 
 | Version | Date | Notes |
 | --- | --- | --- |
+| `1.2.0` | 2024-01-19 | Introduce `toc` shorthand trigger (fix #19) |
 | `1.1.0` | 2024-01-03 | Introduce `minLevel` option ([@ras0q](https://github.com/ras0q)) (fix #11) |
 | `1.0.6` | 2023-11-02 | Escape special characters (fix #3) |
 | `1.0.5` | 2023-11-01 | Fix plugin activation on mobile (fix #17) |
