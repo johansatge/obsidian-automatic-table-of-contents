@@ -10,6 +10,7 @@ if (isObsidian()) {
 }
 
 const codeblockId = 'table-of-contents'
+const codeblockIdShort = 'toc'
 const availableOptions = {
   style: {
     type: 'string',
@@ -41,9 +42,11 @@ const availableOptions = {
 
 class ObsidianAutomaticTableOfContents extends Plugin {
   async onload() {
-    this.registerMarkdownCodeBlockProcessor(codeblockId, (sourceText, element, context) => {
+    const handler = (sourceText, element, context) => {
       context.addChild(new Renderer(this.app, element, context.sourcePath, sourceText))
-    })
+    }
+    this.registerMarkdownCodeBlockProcessor(codeblockId, handler)
+    this.registerMarkdownCodeBlockProcessor(codeblockIdShort, handler)
     this.addCommand({
       id: 'insert-automatic-table-of-contents',
       name: 'Insert table of contents',
