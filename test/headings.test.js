@@ -4,7 +4,7 @@ const {
 } = require('../main.js')
 
 const testStandardHeadings = [
-  { heading: 'Title [1] | level 1', level: 1 },
+  { heading: 'Title [1] | level 1', level: 1 }, // With wiklink characters to be stripped
   { heading: 'Title 1 level 2', level: 2 },
   { heading: 'Title 1 level 3', level: 3 },
   { heading: 'Title 2 level 1', level: 1 },
@@ -87,6 +87,22 @@ describe('Headings', () => {
 - Title 2 level 1
 - Title 3 level 1
   - Title 3 level 2
+`)
+    expect(md).toEqual(expectedMd)
+  })
+
+  test('Returns indented list with title', () => {
+    const options = parseOptionsFromSourceText('')
+    options.title = '# My TOC'
+    const md = getMarkdownFromHeadings(testStandardHeadings, options)
+    const expectedMd = sanitizeMd(`
+# My TOC
+- [[#Title {1} - level 1]]
+  - [[#Title 1 level 2]]
+    - [[#Title 1 level 3]]
+- [[#Title 2 level 1]]
+- [[#Title 3 level 1]]
+  - [[#Title 3 level 2]]
 `)
     expect(md).toEqual(expectedMd)
   })

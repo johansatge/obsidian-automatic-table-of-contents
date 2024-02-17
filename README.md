@@ -47,8 +47,9 @@ The following options are available:
 
 | Option | Default value | Description |
 | --- | --- | --- |
+| `title` | _None_ | Title to display before the table of contents (supports Markdown) |
 | `style` | `nestedList` | Table of contents style (can be `nestedList` or `inlineFirstLevel`) |
-| `minLevel` | `0` | Include headings from the specified level |
+| `minLevel` | `0` | Include headings from the specified level  (`0` for no limit) |
 | `maxLevel` | `0` | Include headings up to the specified level (`0` for no limit) |
 | `includeLinks` | `true` | Make headings clickable |
 | `debugInConsole` | `false` | Print debug info in Obsidian console |
