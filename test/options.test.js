@@ -4,29 +4,32 @@ describe('Options', () => {
   test('Returns default options if none are specified', () => {
     const options = parseOptionsFromSourceText('')
     expect(options).toEqual({
-       style: 'nestedList',
-       includeLinks: true,
-       minLevel: 0,
-       maxLevel: 0,
-       debugInConsole: false,
+      title: '',
+      style: 'nestedList',
+      includeLinks: true,
+      minLevel: 0,
+      maxLevel: 0,
+      debugInConsole: false,
     })
   })
 
   test('Returns custom options if specified', () => {
     const optionsText = `
-      style: inlineFirstLevel
+      title: # Some title
+      style: inlineFirstLevel # Some comment
       minLevel: 1
-      maxLevel: 2
+      maxLevel:  2   # Some other comment
       includeLinks: false
       debugInConsole: true
     `
     const options = parseOptionsFromSourceText(optionsText)
     expect(options).toEqual({
-       style: 'inlineFirstLevel',
-       includeLinks: false,
-       minLevel: 1,
-       maxLevel: 2,
-       debugInConsole: true,
+      title: '# Some title',
+      style: 'inlineFirstLevel',
+      includeLinks: false,
+      minLevel: 1,
+      maxLevel: 2,
+      debugInConsole: true,
     })
   })
 

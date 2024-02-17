@@ -12,8 +12,13 @@ if (isObsidian()) {
 const codeblockId = 'table-of-contents'
 const codeblockIdShort = 'toc'
 const availableOptions = {
-  style: {
+  title: {
     type: 'string',
+    default: '',
+    comment: '',
+  },
+  style: {
+    type: 'value',
     default: 'nestedList',
     values: ['nestedList', 'inlineFirstLevel'],
     comment: 'TOC style (nestedList|inlineFirstLevel)',
@@ -21,7 +26,7 @@ const availableOptions = {
   minLevel: {
     type: 'number',
     default: 0,
-    comment: 'Include headings from the specified level'
+    comment: 'Include headings from the specified level',
   },
   maxLevel: {
     type: 'number',
@@ -69,7 +74,8 @@ function onInsertTocWithDocs(editor) {
   let markdown = ['```' + codeblockId]
   Object.keys(availableOptions).forEach((optionName) => {
     const option = availableOptions[optionName]
-    markdown.push(`${optionName}: ${option.default} # ${option.comment}`)
+    const comment = option.comment.length > 0 ? ` # ${option.comment}` : ''
+    markdown.push(`${optionName}: ${option.default}${comment}`)
   })
   markdown.push('```')
   editor.replaceRange(markdown.join('\n'), editor.getCursor())
@@ -121,8 +127,13 @@ function getMarkdownFromHeadings(headings, options) {
     nestedList: getMarkdownNestedListFromHeadings,
     inlineFirstLevel: getMarkdownInlineFirstLevelFromHeadings,
   }
-  const markdown = markdownHandlersByStyle[options.style](headings, options)
-  return markdown || '_Table of contents: no headings found_'
+  let markdown = ''
+  if (options.title && options.title.length > 0) {
+    markdown += options.title + '\n'
+  }
+  const noHeadingMessage = '_Table of contents: no headings found_'
+  markdown += markdownHandlersByStyle[options.style](headings, options) || noHeadingMessage
+  return markdown
 }
 
 function getMarkdownNestedListFromHeadings(headings, options) {
@@ -149,7 +160,9 @@ function getMarkdownInlineFirstLevelFromHeadings(headings, options) {
 
 function getMarkdownHeading(heading, options) {
   if (options.includeLinks) {
-    const cleaned = heading.heading.replaceAll('|', '-').replaceAll('[', '{').replaceAll(']', '}')
+    let cleaned = heading.heading
+    // Strip reserved wikilink characters
+    cleaned = cleaned.replaceAll('|', '-').replaceAll('[', '{').replaceAll(']', '}')
     return `[[#${cleaned}]]`
   }
   return heading.heading
@@ -170,11 +183,15 @@ function parseOptionsFromSourceText(sourceText = '') {
 }
 
 function parseOptionFromSourceLine(line) {
-  const matches = line.match(/([a-zA-Z0-9._ ]+):([^#]+)/)
+  const matches = line.match(/([a-zA-Z0-9._ ]+):(.*)/)
   if (line.startsWith('#') || !matches) return null
   const possibleName = matches[1].trim()
-  const possibleValue = matches[2].trim()
   const optionParams = availableOptions[possibleName]
+  let possibleValue = matches[2].trim()
+  if (!optionParams || optionParams.type !== 'string') {
+    // Strip comments from values except for strings (as a string may contain markdown)
+    possibleValue = possibleValue.replace(/#[^#]*$/, '').trim()
+  }
   const valueError = new Error(`Invalid value for \`${possibleName}\``)
   if (optionParams && optionParams.type === 'number') {
     const value = parseInt(possibleValue)
@@ -185,15 +202,23 @@ function parseOptionFromSourceLine(line) {
     if (!['true', 'false'].includes(possibleValue)) throw valueError
     return { name: possibleName, value: possibleValue === 'true' }
   }
-  if (optionParams && optionParams.type === 'string') {
+  if (optionParams && optionParams.type === 'value') {
     if (!optionParams.values.includes(possibleValue)) throw valueError
+    return { name: possibleName, value: possibleValue }
+  }
+  if (optionParams && optionParams.type === 'string') {
     return { name: possibleName, value: possibleValue }
   }
   return null
 }
 
-function debug() {
-  console.log(`%cAutomatic Table Of Contents`, 'color: orange; font-weight: bold', ...arguments)
+function debug(type, data) {
+  console.log(...[
+    `%cAutomatic Table Of Contents %c${type}:\n`,
+    'color: orange; font-weight: bold',
+    'font-weight: bold',
+    data,
+  ])
 }
 
 function isObsidian() {
