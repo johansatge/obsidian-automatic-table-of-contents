@@ -79,6 +79,7 @@ This project uses [semver](http://semver.org/).
 
 | Version | Date | Notes |
 | --- | --- | --- |
+| `1.3.2` | 2024-02-18 | Harden headings stripping |
 | `1.3.1` | 2024-02-18 | Strip headings for readability (fix #24, #27) |
 | `1.3.0` | 2024-02-17 | Introduce `title` option (fix #5, #32) |
 | `1.2.0` | 2024-01-19 | Introduce `toc` shorthand trigger (fix #19) |
