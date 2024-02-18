@@ -25,6 +25,7 @@ const testHeadingsWithSpecialChars = [
   { heading: 'Title 1 `level 1` {with special chars}, **bold**, _italic_, #a-tag, ==highlighted== and ~~strikethrough~~ text', level: 1 },
   { heading: 'Title 1 level 2 <em style="color: black">with HTML</em>', level: 2 },
   { heading: 'Title 1 level 2 [[wikilink1]] [[wikilink2|wikitext2]] [mdlink](https://mdurl)', level: 2 },
+  { heading: 'Title 1 level 2 [[malformedlink a pi|pe | and [other chars]', level: 2 },
 ]
 
 describe('Headings', () => {
@@ -120,6 +121,7 @@ describe('Headings', () => {
 - [[#Title 1 \`level 1\` {with special chars}, **bold**, _italic_, a-tag, ==highlighted== and ~~strikethrough~~ text|Title 1 level 1 {with special chars}, bold, italic, #a-tag, highlighted and strikethrough text]]
   - [[#Title 1 level 2 <em style="color: black">with HTML</em>|Title 1 level 2 <em style="color: black">with HTML</em>]]
   - [[#Title 1 level 2 wikilink1 wikilink2 wikitext2 [mdlink](https://mdurl)|Title 1 level 2 wikilink1 wikitext2 mdlink]]
+  - [[#Title 1 level 2 malformedlink a pi pe and [other chars]|Title 1 level 2 malformedlink a pi-pe - and [other chars]]]
 `)
     expect(md).toEqual(expectedMd)
   })
@@ -132,6 +134,7 @@ describe('Headings', () => {
 - Title 1 \`level 1\` {with special chars}, **bold**, _italic_, #a-tag, ==highlighted== and ~~strikethrough~~ text
   - Title 1 level 2 <em style="color: black">with HTML</em>
   - Title 1 level 2 [[wikilink1]] [[wikilink2|wikitext2]] [mdlink](https://mdurl)
+  - Title 1 level 2 [[malformedlink a pi|pe | and [other chars]
 `)
     expect(md).toEqual(expectedMd)
   })

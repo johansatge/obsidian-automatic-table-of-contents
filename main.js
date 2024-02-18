@@ -175,6 +175,8 @@ function getMarkdownHeading(heading, options) {
     // Example: "# Some [[file.md|heading]]" must be translated to "[[#Some file.md heading|Some heading]]"
     text = text.replace(/\[\[([^\]]+)\|([^\]]+)\]\]/g, isForLink ? '$1 $2' : '$2')
     text = text.replace(/\[\[([^\]]+)\]\]/g, '$1') // Strip [[link]] format
+    // Replace malformed links & reserved wikilinks chars
+    text = text.replaceAll('[[', '').replaceAll('| ', isForLink ? '' : '- ').replaceAll('|', isForLink ? ' ' : '-')
     return text
   }
   const stripTags = (text) => text.replaceAll('#', '')
