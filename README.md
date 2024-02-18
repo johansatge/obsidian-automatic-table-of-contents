@@ -10,7 +10,8 @@
 ![demo](images/demo.gif)
 
 - [Installation](#installation)
-- [Usage](#usage)
+- [Usage and options](#usage-and-options)
+- [Limitations and known bugs](#limitations-and-known-bugs)
 - [Publish a new version](#publish-a-new-version)
 - [Changelog](#changelog)
 - [License](#license)
@@ -27,7 +28,7 @@ git clone git@github.com:johansatge/obsidian-automatic-table-of-contents.git
 
 Alternatively, download the [latest release](https://github.com/johansatge/obsidian-automatic-table-of-contents/releases) and unzip it in your `.obsidian/plugins` directory.
 
-## Usage
+## Usage and options
 
 Insert a codeblock with the `table-of-contents` (or its short version `toc`) syntax.
 
@@ -53,6 +54,12 @@ The following options are available:
 | `maxLevel` | `0` | Include headings up to the specified level (`0` for no limit) |
 | `includeLinks` | `true` | Make headings clickable |
 | `debugInConsole` | `false` | Print debug info in Obsidian console |
+
+## Limitations and known bugs
+
+- The table of contents may not be generated correctly if the document doesn't implement a correct titles hierarchy (level 1 title then level 3 without a level 2 in between, for instance)
+- HTML & markdown that may be in the document headings are stripped when `includeLinks: true` (see [#24](https://github.com/johansatge/obsidian-automatic-table-of-contents/issues/24) & [#27](https://github.com/johansatge/obsidian-automatic-table-of-contents/issues/27))
+- LaTeX equations are not rendered correctly when `includeLinks: true` (see [#13](https://github.com/johansatge/obsidian-automatic-table-of-contents/issues/13))
 
 ## Publish a new version
 
