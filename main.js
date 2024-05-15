@@ -152,8 +152,11 @@ function getMarkdownNestedListFromHeadings(headings, options) {
 }
 
 function getMarkdownInlineFirstLevelFromHeadings(headings, options) {
+  const minLevel = options.minLevel > 0
+    ? options.minLevel
+    : Math.min(...headings.map((heading) => heading.level))
   const items = headings
-    .filter((heading) => heading.level === 1)
+    .filter((heading) => heading.level === minLevel)
     .map((heading) => {
       return getMarkdownHeading(heading, options)
     })
