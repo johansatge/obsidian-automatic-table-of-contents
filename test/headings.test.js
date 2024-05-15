@@ -160,6 +160,29 @@ Title 1 level 1 | Title 2 level 1 | Title 3 level 1
 `)
     expect(md).toEqual(expectedMd)
   })
+
+  test('Returns flat list with custom level', () => {
+    const options = parseOptionsFromSourceText('')
+    options.style = 'inlineFirstLevel'
+    options.includeLinks = false
+    options.minLevel = 3
+    const md = getMarkdownFromHeadings(testStandardHeadings, options)
+    const expectedMd = sanitizeMd(`
+Title 1 level 3
+`)
+    expect(md).toEqual(expectedMd)
+  })
+
+  test('Returns flat list with default level', () => {
+    const options = parseOptionsFromSourceText('')
+    options.style = 'inlineFirstLevel'
+    options.includeLinks = false
+    const md = getMarkdownFromHeadings(testHeadingsWithoutFirstLevel, options)
+    const expectedMd = sanitizeMd(`
+Title 1 level 2 | Title 2 level 2 | Title 3 level 2
+`)
+    expect(md).toEqual(expectedMd)
+  })
 })
 
 function sanitizeMd(md) {
