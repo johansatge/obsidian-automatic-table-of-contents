@@ -79,6 +79,7 @@ This project uses [semver](http://semver.org/).
 
 | Version | Date | Notes |
 | --- | --- | --- |
+| `1.3.3` | 2024-05-16 | Compute the right min level when `style:inlineFirstLevel` (fix #39) |
 | `1.3.2` | 2024-02-18 | Harden headings stripping |
 | `1.3.1` | 2024-02-18 | Strip headings for readability (fix #24, #27) |
 | `1.3.0` | 2024-02-17 | Introduce `title` option (fix #5, #32) |
