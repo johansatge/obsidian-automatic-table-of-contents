@@ -22,7 +22,7 @@ const availableOptions = {
   style: {
     type: 'value',
     default: 'nestedList',
-    values: ['nestedList', 'inlineFirstLevel'],
+    values: ['nestedList', 'nestedOrderedList', 'inlineFirstLevel'],
     comment: 'TOC style (nestedList|inlineFirstLevel)',
   },
   minLevel: {
@@ -127,6 +127,7 @@ class Renderer extends MarkdownRenderChild {
 function getMarkdownFromHeadings(headings, options) {
   const markdownHandlersByStyle = {
     nestedList: getMarkdownNestedListFromHeadings,
+    nestedOrderedList: getMarkdownNestedOrderedListFromHeadings,
     inlineFirstLevel: getMarkdownInlineFirstLevelFromHeadings,
   }
   let markdown = ''
@@ -147,6 +148,22 @@ function getMarkdownNestedListFromHeadings(headings, options) {
     if (heading.level < minLevel) return
     if (options.maxLevel > 0 && heading.level > options.maxLevel) return
     lines.push(`${'\t'.repeat(heading.level - minLevel)}- ${getMarkdownHeading(heading, options)}`)
+  })
+  return lines.length > 0 ? lines.join('\n') : null
+}
+
+function getMarkdownNestedOrderedListFromHeadings(headings, options) {
+  const lines = []
+  const levelEntries = {}
+  const minLevel = options.minLevel > 0
+    ? options.minLevel
+    : Math.min(...headings.map((heading) => heading.level))
+  headings.forEach((heading) => {
+    if (heading.level < minLevel) return
+    if (options.maxLevel > 0 && heading.level > options.maxLevel) return
+    if (!levelEntries[heading.level]) levelEntries[heading.level] = 1
+    lines.push(`${'\t'.repeat(heading.level - minLevel)}${levelEntries[heading.level]}. ${getMarkdownHeading(heading, options)}`)
+    levelEntries[heading.level] += 1
   })
   return lines.length > 0 ? lines.join('\n') : null
 }
