@@ -57,6 +57,21 @@ describe('Headings', () => {
     expect(md).toEqual(expectedMd)
   })
 
+  test('Returns indented ordered list with links', () => {
+    const options = parseOptionsFromSourceText('')
+    options.style = 'nestedOrderedList'
+    const md = getMarkdownFromHeadings(testStandardHeadings, options)
+    const expectedMd = sanitizeMd(`
+1. [[#Title 1 level 1|Title 1 level 1]]
+  1. [[#Title 1 level 2|Title 1 level 2]]
+    1. [[#Title 1 level 3|Title 1 level 3]]
+1. [[#Title 2 level 1|Title 2 level 1]]
+1. [[#Title 3 level 1|Title 3 level 1]]
+  1. [[#Title 3 level 2|Title 3 level 2]]
+`)
+    expect(md).toEqual(expectedMd)
+  })
+
   test('Returns indented list with min level', () => {
     const options = parseOptionsFromSourceText('')
     options.minLevel = 2
