@@ -10,6 +10,9 @@
 ![demo](images/demo.gif)
 
 - [Installation](#installation)
+  - [From Obsidian (easiest)](#from-obsidian-easiest)
+  - [From git](#from-git)
+  - [From source](#from-source)
 - [Usage and options](#usage-and-options)
 - [Limitations and known bugs](#limitations-and-known-bugs)
 - [Publish a new version](#publish-a-new-version)
@@ -19,6 +22,12 @@
 
 ## Installation
 
+### From Obsidian (easiest)
+
+Install the plugin from the [Community plugins](https://obsidian.md/plugins?search=automatic%20table%20of%20contents) section in the app settings.
+
+### From git
+
 Clone the plugin in your `.obsidian/plugins` directory:
 
 ```shell
@@ -26,7 +35,9 @@ cd /path/to/your/vault/.obsidian/plugins
 git clone git@github.com:johansatge/obsidian-automatic-table-of-contents.git
 ```
 
-Alternatively, download the [latest release](https://github.com/johansatge/obsidian-automatic-table-of-contents/releases) and unzip it in your `.obsidian/plugins` directory.
+### From source
+
+Download the [latest release](https://github.com/johansatge/obsidian-automatic-table-of-contents/releases) and unzip it in the `.obsidian/plugins/automatic-table-of-contents` directory.
 
 ## Usage and options
 
