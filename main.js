@@ -23,7 +23,7 @@ const availableOptions = {
     type: 'value',
     default: 'nestedList',
     values: ['nestedList', 'nestedOrderedList', 'inlineFirstLevel'],
-    comment: 'TOC style (nestedList|inlineFirstLevel)',
+    comment: 'TOC style (nestedList|nestedOrderedList|inlineFirstLevel)',
   },
   minLevel: {
     type: 'number',
@@ -140,30 +140,23 @@ function getMarkdownFromHeadings(headings, options) {
 }
 
 function getMarkdownNestedListFromHeadings(headings, options) {
-  const lines = []
-  const minLevel = options.minLevel > 0
-    ? options.minLevel
-    : Math.min(...headings.map((heading) => heading.level))
-  headings.forEach((heading) => {
-    if (heading.level < minLevel) return
-    if (options.maxLevel > 0 && heading.level > options.maxLevel) return
-    lines.push(`${'\t'.repeat(heading.level - minLevel)}- ${getMarkdownHeading(heading, options)}`)
-  })
-  return lines.length > 0 ? lines.join('\n') : null
+  return getMarkdownListFromHeadings(headings, false, options)
 }
 
 function getMarkdownNestedOrderedListFromHeadings(headings, options) {
+  return getMarkdownListFromHeadings(headings, true, options)
+}
+
+function getMarkdownListFromHeadings(headings, isOrdered, options) {
+  const prefix = isOrdered ? '1.' : '-'
   const lines = []
-  const levelEntries = {}
   const minLevel = options.minLevel > 0
     ? options.minLevel
     : Math.min(...headings.map((heading) => heading.level))
   headings.forEach((heading) => {
     if (heading.level < minLevel) return
     if (options.maxLevel > 0 && heading.level > options.maxLevel) return
-    if (!levelEntries[heading.level]) levelEntries[heading.level] = 1
-    lines.push(`${'\t'.repeat(heading.level - minLevel)}${levelEntries[heading.level]}. ${getMarkdownHeading(heading, options)}`)
-    levelEntries[heading.level] += 1
+    lines.push(`${'\t'.repeat(heading.level - minLevel)}${prefix} ${getMarkdownHeading(heading, options)}`)
   })
   return lines.length > 0 ? lines.join('\n') : null
 }
