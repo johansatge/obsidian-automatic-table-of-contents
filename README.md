@@ -1,5 +1,6 @@
 # Obsidian Automatic Table Of Contents
 
+[![Downloads](https://img.shields.io/badge/dynamic/json?logo=obsidian&color=%23483699&label=downloads&query=%24%5B%22automatic-table-of-contents%22%5D.downloads&url=https%3A%2F%2Fraw.githubusercontent.com%2Fobsidianmd%2Fobsidian-releases%2Fmaster%2Fcommunity-plugin-stats.json)](https://obsidian.md/plugins?search=automatic%20table%20of%20contents)
 [![Version](https://img.shields.io/github/v/release/johansatge/obsidian-automatic-table-of-contents)](https://github.com/johansatge/obsidian-automatic-table-of-contents/releases)
 [![Test](https://github.com/johansatge/obsidian-automatic-table-of-contents/actions/workflows/test.yml/badge.svg)](https://github.com/johansatge/obsidian-automatic-table-of-contents/actions)
 
