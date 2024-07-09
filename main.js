@@ -47,23 +47,36 @@ const availableOptions = {
   },
 }
 
+function addCSS() {
+  const css = `
+    .workspace-leaf-content[data-mode="source"] .block-language-table-of-contents li a[style="display: none;"] {
+      display: none !important;
+    }
+  `;
+  const style = document.createElement('style');
+  style.textContent = css;
+  document.head.append(style);
+}
+
 class ObsidianAutomaticTableOfContents extends Plugin {
   async onload() {
+    addCSS(); // Call the function to add the CSS
+
     const handler = (sourceText, element, context) => {
-      context.addChild(new Renderer(this.app, element, context.sourcePath, sourceText))
-    }
-    this.registerMarkdownCodeBlockProcessor(codeblockId, handler)
-    this.registerMarkdownCodeBlockProcessor(codeblockIdShort, handler)
+      context.addChild(new Renderer(this.app, element, context.sourcePath, sourceText));
+    };
+    this.registerMarkdownCodeBlockProcessor(codeblockId, handler);
+    this.registerMarkdownCodeBlockProcessor(codeblockIdShort, handler);
     this.addCommand({
       id: 'insert-automatic-table-of-contents',
       name: 'Insert table of contents',
       editorCallback: onInsertToc,
-    })
+    });
     this.addCommand({
       id: 'insert-automatic-table-of-contents-docs',
       name: 'Insert table of contents (documented)',
       editorCallback: onInsertTocWithDocs,
-    })
+    });
   }
 }
 
