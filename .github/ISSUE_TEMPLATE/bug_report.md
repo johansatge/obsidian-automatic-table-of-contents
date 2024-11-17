@@ -11,6 +11,7 @@ _Hello! Please follow the checklist below when filling a bug report_
 
 - [ ] Check in the readme if the bug is linked to a documented limitation
 - [ ] Describe what the bug is
+- [ ] Check if the bug can be reproduced in the _Obsidian Sandbox_ vault, or with other plugins disabled
 - [ ] Paste a Markdown block that helps reproducing the described issue
 - [ ] Upload a screenshot with the rendered result if relevant
 - [ ] Describe the environment (OS, Obsidian version, installed plugins)
