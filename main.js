@@ -40,6 +40,11 @@ const availableOptions = {
     default: true,
     comment: 'Make headings clickable',
   },
+  hideWhenEmpty: {
+    type: 'boolean',
+    default: false,
+    comment: 'Hide TOC if no headings are found'
+  },
   debugInConsole: {
     type: 'boolean',
     default: false,
@@ -130,13 +135,18 @@ function getMarkdownFromHeadings(headings, options) {
     nestedOrderedList: getMarkdownNestedOrderedListFromHeadings,
     inlineFirstLevel: getMarkdownInlineFirstLevelFromHeadings,
   }
-  let markdown = ''
+  let titleMarkdown = ''
   if (options.title && options.title.length > 0) {
-    markdown += options.title + '\n'
+    titleMarkdown += options.title + '\n'
   }
-  const noHeadingMessage = '_Table of contents: no headings found_'
-  markdown += markdownHandlersByStyle[options.style](headings, options) || noHeadingMessage
-  return markdown
+  const markdownHeadings = markdownHandlersByStyle[options.style](headings, options)
+  if (markdownHeadings === null) {
+    if (options.hideWhenEmpty) {
+      return ''
+    }
+    return titleMarkdown + '_Table of contents: no headings found_'
+  }
+  return titleMarkdown + markdownHeadings
 }
 
 function getMarkdownNestedListFromHeadings(headings, options) {
