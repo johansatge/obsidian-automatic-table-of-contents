@@ -29,6 +29,19 @@ const testHeadingsWithSpecialChars = [
 ]
 
 describe('Headings', () => {
+  test('Returns default message if no headings', () => {
+    const options = parseOptionsFromSourceText('')
+    const md = getMarkdownFromHeadings([], options)
+    expect(md).toContain('no headings found')
+  })
+
+  test('Returns empty TOC if no headings & option enabled', () => {
+    const options = parseOptionsFromSourceText('')
+    options.hideWhenEmpty = true
+    const md = getMarkdownFromHeadings([], options)
+    expect(md).toEqual('')
+  })
+
   test('Returns indented list with links', () => {
     const options = parseOptionsFromSourceText('')
     const md = getMarkdownFromHeadings(testStandardHeadings, options)

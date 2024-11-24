@@ -9,6 +9,7 @@ describe('Options', () => {
       includeLinks: true,
       minLevel: 0,
       maxLevel: 0,
+      hideWhenEmpty: false,
       debugInConsole: false,
     })
   })
@@ -20,6 +21,7 @@ describe('Options', () => {
       minLevel: 1
       maxLevel:  2   # Some other comment
       includeLinks: false
+      hideWhenEmpty: true
       debugInConsole: true
     `
     const options = parseOptionsFromSourceText(optionsText)
@@ -29,6 +31,7 @@ describe('Options', () => {
       includeLinks: false,
       minLevel: 1,
       maxLevel: 2,
+      hideWhenEmpty: true,
       debugInConsole: true,
     })
   })
@@ -75,6 +78,14 @@ describe('Options', () => {
       try {
         const options = parseOptionsFromSourceText('includeLinks: no')
         expect(options.includeLinks).toEqual('Should have thrown')
+      } catch(error) {
+        expect(error.message).toContain('Invalid value')
+      }
+    })
+    test('On hideWhenEmpty', () => {
+      try {
+        const options = parseOptionsFromSourceText('hideWhenEmpty: maybe')
+        expect(options.hideWhenEmpty).toEqual('Should have thrown')
       } catch(error) {
         expect(error.message).toContain('Invalid value')
       }
