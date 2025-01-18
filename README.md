@@ -91,6 +91,7 @@ This project uses [semver](http://semver.org/).
 
 | Version | Date | Notes |
 | --- | --- | --- |
+| `1.5.1` | 2025-01-18 | Rename command for readability (fix #53) |
 | `1.5.0` | 2024-11-24 | Add `hideWhenEmpty` option (fix #51) |
 | `1.4.0` | 2024-05-19 | Add `nestedOrderedList` style ([@bjtho08](https://github.com/bjtho08)) (fix #41) |
 | `1.3.3` | 2024-05-16 | Compute the right min level when `style:inlineFirstLevel` (fix #39) |
