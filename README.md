@@ -72,6 +72,7 @@ The following options are available:
 - The table of contents may not be generated correctly if the document doesn't implement a correct titles hierarchy (level 1 title then level 3 without a level 2 in between, for instance)
 - HTML & markdown that may be in the document headings are stripped when `includeLinks: true` (see [#24](https://github.com/johansatge/obsidian-automatic-table-of-contents/issues/24) & [#27](https://github.com/johansatge/obsidian-automatic-table-of-contents/issues/27))
 - LaTeX equations are not rendered correctly when `includeLinks: true` (see [#13](https://github.com/johansatge/obsidian-automatic-table-of-contents/issues/13))
+- Links might not behave correctly if the same title is present several times on the page (see [#57](https://github.com/johansatge/obsidian-automatic-table-of-contents/issues/57))
 
 ## Publish a new version
 
