@@ -1,7 +1,4 @@
-const {
-  getMarkdownFromHeadings,
-  parseOptionsFromSourceText,
-} = require('../main.js')
+const { getMarkdownFromHeadings, parseOptionsFromSourceText } = require('../main.js')
 
 const testStandardHeadings = [
   { heading: 'Title 1 level 1', level: 1 },
@@ -22,9 +19,16 @@ const testHeadingsWithoutFirstLevel = [
 ]
 
 const testHeadingsWithSpecialChars = [
-  { heading: 'Title 1 `level 1` {with special chars}, **bold**, _italic_, #a-tag, ==highlighted== and ~~strikethrough~~ text', level: 1 },
+  {
+    heading:
+      'Title 1 `level 1` {with special chars}, **bold**, _italic_, #a-tag, ==highlighted== and ~~strikethrough~~ text',
+    level: 1,
+  },
   { heading: 'Title 1 level 2 <em style="color: black">with HTML</em>', level: 2 },
-  { heading: 'Title 1 level 2 [[wikilink1]] [[wikilink2|wikitext2]] [mdlink](https://mdurl)', level: 2 },
+  {
+    heading: 'Title 1 level 2 [[wikilink1]] [[wikilink2|wikitext2]] [mdlink](https://mdurl)',
+    level: 2,
+  },
   { heading: 'Title 1 level 2 [[malformedlink a pi|pe | and [other chars]', level: 2 },
 ]
 
@@ -166,7 +170,6 @@ describe('Headings', () => {
 `)
     expect(md).toEqual(expectedMd)
   })
-
 
   test('Returns flat first-level list with links', () => {
     const options = parseOptionsFromSourceText('')

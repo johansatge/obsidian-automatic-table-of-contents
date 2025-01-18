@@ -43,7 +43,7 @@ const availableOptions = {
   hideWhenEmpty: {
     type: 'boolean',
     default: false,
-    comment: 'Hide TOC if no headings are found'
+    comment: 'Hide TOC if no headings are found',
   },
   debugInConsole: {
     type: 'boolean',
@@ -73,17 +73,17 @@ class ObsidianAutomaticTableOfContents extends Plugin {
 }
 
 function onInsertToc(editor) {
-  const markdown = '```' + codeblockId + '\n```'
+  const markdown = `\`\`\`${codeblockId}\n\`\`\``
   editor.replaceRange(markdown, editor.getCursor())
 }
 
 function onInsertTocWithDocs(editor) {
-  let markdown = ['```' + codeblockId]
-  Object.keys(availableOptions).forEach((optionName) => {
+  const markdown = [`\`\`\`${codeblockId}`]
+  for (const optionName of Object.keys(availableOptions)) {
     const option = availableOptions[optionName]
     const comment = option.comment.length > 0 ? ` # ${option.comment}` : ''
     markdown.push(`${optionName}: ${option.default}${comment}`)
-  })
+  }
   markdown.push('```')
   editor.replaceRange(markdown.join('\n'), editor.getCursor())
 }
@@ -114,7 +114,7 @@ class Renderer extends MarkdownRenderChild {
       if (options.debugInConsole) debug('Options', options)
 
       const metadata = this.app.metadataCache.getCache(this.sourcePath)
-      const headings = metadata && metadata.headings ? metadata.headings : []
+      const headings = metadata?.headings ? metadata.headings : []
       if (options.debugInConsole) debug('Headings', headings)
 
       const markdown = getMarkdownFromHeadings(headings, options)
@@ -122,7 +122,7 @@ class Renderer extends MarkdownRenderChild {
 
       this.element.empty()
       MarkdownRenderer.renderMarkdown(markdown, this.element, this.sourcePath, this)
-    } catch(error) {
+    } catch (error) {
       const readableError = `_💥 Could not render table of contents (${error.message})_`
       MarkdownRenderer.renderMarkdown(readableError, this.element, this.sourcePath, this)
     }
@@ -137,14 +137,14 @@ function getMarkdownFromHeadings(headings, options) {
   }
   let titleMarkdown = ''
   if (options.title && options.title.length > 0) {
-    titleMarkdown += options.title + '\n'
+    titleMarkdown += `${options.title}\n`
   }
   const markdownHeadings = markdownHandlersByStyle[options.style](headings, options)
   if (markdownHeadings === null) {
     if (options.hideWhenEmpty) {
       return ''
     }
-    return titleMarkdown + '_Table of contents: no headings found_'
+    return `${titleMarkdown}_Table of contents: no headings found_`
   }
   return titleMarkdown + markdownHeadings
 }
@@ -160,21 +160,21 @@ function getMarkdownNestedOrderedListFromHeadings(headings, options) {
 function getMarkdownListFromHeadings(headings, isOrdered, options) {
   const prefix = isOrdered ? '1.' : '-'
   const lines = []
-  const minLevel = options.minLevel > 0
-    ? options.minLevel
-    : Math.min(...headings.map((heading) => heading.level))
-  headings.forEach((heading) => {
-    if (heading.level < minLevel) return
-    if (options.maxLevel > 0 && heading.level > options.maxLevel) return
-    lines.push(`${'\t'.repeat(heading.level - minLevel)}${prefix} ${getMarkdownHeading(heading, options)}`)
-  })
+  const minLevel =
+    options.minLevel > 0 ? options.minLevel : Math.min(...headings.map((heading) => heading.level))
+  for (const heading of headings) {
+    if (heading.level < minLevel) continue
+    if (options.maxLevel > 0 && heading.level > options.maxLevel) continue
+    lines.push(
+      `${'\t'.repeat(heading.level - minLevel)}${prefix} ${getMarkdownHeading(heading, options)}`,
+    )
+  }
   return lines.length > 0 ? lines.join('\n') : null
 }
 
 function getMarkdownInlineFirstLevelFromHeadings(headings, options) {
-  const minLevel = options.minLevel > 0
-    ? options.minLevel
-    : Math.min(...headings.map((heading) => heading.level))
+  const minLevel =
+    options.minLevel > 0 ? options.minLevel : Math.min(...headings.map((heading) => heading.level))
   const items = headings
     .filter((heading) => heading.level === minLevel)
     .map((heading) => {
@@ -185,10 +185,13 @@ function getMarkdownInlineFirstLevelFromHeadings(headings, options) {
 
 function getMarkdownHeading(heading, options) {
   const stripMarkdown = (text) => {
-    text = text.replaceAll('*', '').replaceAll('_', '').replaceAll('`', '')
-    text = text.replaceAll('==', '').replaceAll('~~', '')
-    text = text.replace(/\[([^\]]+)\]\([^)]+\)/g, '$1') // Strip markdown links
     return text
+      .replaceAll('*', '')
+      .replaceAll('_', '')
+      .replaceAll('`', '')
+      .replaceAll('==', '')
+      .replaceAll('~~', '')
+      .replace(/\[([^\]]+)\]\([^)]+\)/g, '$1') // Strip markdown links
   }
   const stripHtml = (text) => stripMarkdown(htmlToMarkdown(text))
   const stripWikilinks = (text, isForLink) => {
@@ -196,11 +199,15 @@ function getMarkdownHeading(heading, options) {
     // For the text part of the final link we only keep "text"
     // For the link part we need the text + link
     // Example: "# Some [[file.md|heading]]" must be translated to "[[#Some file.md heading|Some heading]]"
-    text = text.replace(/\[\[([^\]]+)\|([^\]]+)\]\]/g, isForLink ? '$1 $2' : '$2')
-    text = text.replace(/\[\[([^\]]+)\]\]/g, '$1') // Strip [[link]] format
-    // Replace malformed links & reserved wikilinks chars
-    text = text.replaceAll('[[', '').replaceAll('| ', isForLink ? '' : '- ').replaceAll('|', isForLink ? ' ' : '-')
-    return text
+    return (
+      text
+        .replace(/\[\[([^\]]+)\|([^\]]+)\]\]/g, isForLink ? '$1 $2' : '$2')
+        .replace(/\[\[([^\]]+)\]\]/g, '$1') // Strip [[link]] format
+        // Replace malformed links & reserved wikilinks chars
+        .replaceAll('[[', '')
+        .replaceAll('| ', isForLink ? '' : '- ')
+        .replaceAll('|', isForLink ? ' ' : '-')
+    )
   }
   const stripTags = (text) => text.replaceAll('#', '')
   if (options.includeLinks) {
@@ -233,15 +240,15 @@ function getMarkdownHeading(heading, options) {
 
 function parseOptionsFromSourceText(sourceText = '') {
   const options = {}
-  Object.keys(availableOptions).forEach((option) => {
+  for (const option of Object.keys(availableOptions)) {
     options[option] = availableOptions[option].default
-  })
-  sourceText.split('\n').forEach((line) => {
+  }
+  for (const line of sourceText.split('\n')) {
     const option = parseOptionFromSourceLine(line)
     if (option !== null) {
       options[option.name] = option.value
     }
-  })
+  }
   return options
 }
 
@@ -257,7 +264,7 @@ function parseOptionFromSourceLine(line) {
   }
   const valueError = new Error(`Invalid value for \`${possibleName}\``)
   if (optionParams && optionParams.type === 'number') {
-    const value = parseInt(possibleValue)
+    const value = Number.parseInt(possibleValue)
     if (value < 0) throw valueError
     return { name: possibleName, value }
   }
@@ -276,12 +283,14 @@ function parseOptionFromSourceLine(line) {
 }
 
 function debug(type, data) {
-  console.log(...[
-    `%cAutomatic Table Of Contents %c${type}:\n`,
-    'color: orange; font-weight: bold',
-    'font-weight: bold',
-    data,
-  ])
+  console.log(
+    ...[
+      `%cAutomatic Table Of Contents %c${type}:\n`,
+      'color: orange; font-weight: bold',
+      'font-weight: bold',
+      data,
+    ],
+  )
 }
 
 function isObsidian() {
