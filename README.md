@@ -54,7 +54,7 @@ option2: value2
 Alternatively, two commands are available in the command palette:
 
 - Insert table of contents
-- Insert table of contents (documented)
+- Insert table of contents (with available options)
 
 The following options are available:
 

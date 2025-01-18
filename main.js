@@ -66,7 +66,7 @@ class ObsidianAutomaticTableOfContents extends Plugin {
     })
     this.addCommand({
       id: 'insert-automatic-table-of-contents-docs',
-      name: 'Insert table of contents (documented)',
+      name: 'Insert table of contents (with available options)',
       editorCallback: onInsertTocWithDocs,
     })
   }
