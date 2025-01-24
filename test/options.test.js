@@ -54,7 +54,7 @@ describe('Options', () => {
       try {
         const options = parseOptionsFromSourceText('style: someInvalidStyle')
         expect(options.style).toEqual('Should have thrown')
-      } catch(error) {
+      } catch (error) {
         expect(error.message).toContain('Invalid value')
       }
     })
@@ -62,7 +62,7 @@ describe('Options', () => {
       try {
         const options = parseOptionsFromSourceText('minLevel: -1')
         expect(options.minLevel).toEqual('Should have thrown')
-      } catch(error) {
+      } catch (error) {
         expect(error.message).toContain('Invalid value')
       }
     })
@@ -70,7 +70,7 @@ describe('Options', () => {
       try {
         const options = parseOptionsFromSourceText('maxLevel: -1')
         expect(options.maxLevel).toEqual('Should have thrown')
-      } catch(error) {
+      } catch (error) {
         expect(error.message).toContain('Invalid value')
       }
     })
@@ -78,7 +78,7 @@ describe('Options', () => {
       try {
         const options = parseOptionsFromSourceText('includeLinks: no')
         expect(options.includeLinks).toEqual('Should have thrown')
-      } catch(error) {
+      } catch (error) {
         expect(error.message).toContain('Invalid value')
       }
     })
@@ -86,7 +86,7 @@ describe('Options', () => {
       try {
         const options = parseOptionsFromSourceText('hideWhenEmpty: maybe')
         expect(options.hideWhenEmpty).toEqual('Should have thrown')
-      } catch(error) {
+      } catch (error) {
         expect(error.message).toContain('Invalid value')
       }
     })
@@ -94,7 +94,7 @@ describe('Options', () => {
       try {
         const options = parseOptionsFromSourceText('debugInConsole: yes')
         expect(options.debugInConsole).toEqual('Should have thrown')
-      } catch(error) {
+      } catch (error) {
         expect(error.message).toContain('Invalid value')
       }
     })

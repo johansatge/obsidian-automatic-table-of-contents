@@ -1,9 +1,12 @@
 {
   "private": true,
   "scripts": {
-    "test": "jest --config=test/jest.config.js"
+    "biome-check": "biome check --verbose",
+    "biome-ci": "biome ci",
+    "jest": "jest --config=test/jest.config.js"
   },
   "devDependencies": {
+    "@biomejs/biome": "1.9.4",
     "jest": "^29.7.0"
   }
 }
