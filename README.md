@@ -73,6 +73,7 @@ The following options are available:
 - HTML & markdown that may be in the document headings are stripped when `includeLinks: true` (see [#24](https://github.com/johansatge/obsidian-automatic-table-of-contents/issues/24) & [#27](https://github.com/johansatge/obsidian-automatic-table-of-contents/issues/27))
 - LaTeX equations are not rendered correctly when `includeLinks: true` (see [#13](https://github.com/johansatge/obsidian-automatic-table-of-contents/issues/13))
 - Links might not behave correctly if the same title is present several times on the page (see [#57](https://github.com/johansatge/obsidian-automatic-table-of-contents/issues/57))
+- Generated table of contents is not foldable (see [#23](https://github.com/johansatge/obsidian-automatic-table-of-contents/issues/23))
 
 ## Publish a new version
 
