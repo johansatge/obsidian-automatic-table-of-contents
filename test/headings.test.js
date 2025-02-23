@@ -4,6 +4,7 @@ const testStandardHeadings = [
   { heading: 'Title 1 level 1', level: 1 },
   { heading: 'Title 1 level 2', level: 2 },
   { heading: 'Title 1 level 3', level: 3 },
+  { heading: '', level: 3 },
   { heading: 'Title 2 level 1', level: 1 },
   { heading: 'Title 3 level 1', level: 1 },
   { heading: 'Title 3 level 2', level: 2 },
