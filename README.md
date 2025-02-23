@@ -94,6 +94,7 @@ This project uses [semver](http://semver.org/).
 
 | Version | Date | Notes |
 | --- | --- | --- |
+| `1.6.1` | 2025-02-23 | Inline title when `style:inlineFirstLevel` (fix #59) |
 | `1.6.0` | 2025-02-23 | Ignore empty headings (fix #60) |
 | `1.5.1` | 2025-01-18 | Rename command for readability (fix #53) |
 | `1.5.0` | 2024-11-24 | Add `hideWhenEmpty` option (fix #51) |
