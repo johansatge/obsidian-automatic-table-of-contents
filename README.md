@@ -92,6 +92,7 @@ This project uses [semver](http://semver.org/).
 
 | Version | Date | Notes |
 | --- | --- | --- |
+| `1.6.0` | 2025-02-23 | Ignore empty headings (fix #60) |
 | `1.5.1` | 2025-01-18 | Rename command for readability (fix #53) |
 | `1.5.0` | 2024-11-24 | Add `hideWhenEmpty` option (fix #51) |
 | `1.4.0` | 2024-05-19 | Add `nestedOrderedList` style ([@bjtho08](https://github.com/bjtho08)) (fix #41) |
