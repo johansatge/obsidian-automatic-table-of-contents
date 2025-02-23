@@ -137,7 +137,8 @@ function getMarkdownFromHeadings(headings, options) {
   }
   let titleMarkdown = ''
   if (options.title && options.title.length > 0) {
-    titleMarkdown += `${options.title}\n`
+    const titleSeparator = options.style === 'inlineFirstLevel' ? ' ' : '\n'
+    titleMarkdown += `${options.title}${titleSeparator}`
   }
   const markdownHeadings = markdownHandlersByStyle[options.style](headings, options)
   if (markdownHeadings === null) {
