@@ -74,6 +74,7 @@ The following options are available:
 - LaTeX equations are not rendered correctly when `includeLinks: true` (see [#13](https://github.com/johansatge/obsidian-automatic-table-of-contents/issues/13))
 - Links might not behave correctly if the same title is present several times on the page (see [#57](https://github.com/johansatge/obsidian-automatic-table-of-contents/issues/57))
 - Generated table of contents is not foldable (see [#23](https://github.com/johansatge/obsidian-automatic-table-of-contents/issues/23))
+- The table of contents is based on a codeblock so it can updated; it doesn't generate real Markdown in the document, so it won't be visible when exporting, or on Obsidian Publish (see [#10](https://github.com/johansatge/obsidian-automatic-table-of-contents/issues/10#issuecomment-2676779810) and [#31](https://github.com/johansatge/obsidian-automatic-table-of-contents/issues/31))
 
 ## Publish a new version
 
