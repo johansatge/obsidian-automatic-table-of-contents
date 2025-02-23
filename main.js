@@ -165,6 +165,7 @@ function getMarkdownListFromHeadings(headings, isOrdered, options) {
   for (const heading of headings) {
     if (heading.level < minLevel) continue
     if (options.maxLevel > 0 && heading.level > options.maxLevel) continue
+    if (heading.heading.length === 0) continue
     lines.push(
       `${'\t'.repeat(heading.level - minLevel)}${prefix} ${getMarkdownHeading(heading, options)}`,
     )
@@ -177,6 +178,7 @@ function getMarkdownInlineFirstLevelFromHeadings(headings, options) {
     options.minLevel > 0 ? options.minLevel : Math.min(...headings.map((heading) => heading.level))
   const items = headings
     .filter((heading) => heading.level === minLevel)
+    .filter((heading) => heading.heading.length > 0)
     .map((heading) => {
       return getMarkdownHeading(heading, options)
     })
