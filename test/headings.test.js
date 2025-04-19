@@ -1,4 +1,5 @@
-const { getMarkdownFromHeadings, parseOptionsFromSourceText } = require('../main.js')
+const { getMarkdownFromHeadings } = require('../src/headings.js')
+const { parseOptionsFromSourceText } = require('../src/options.js')
 
 const testStandardHeadings = [
   { heading: 'Title 1 level 1', level: 1 },

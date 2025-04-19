@@ -18,5 +18,8 @@
       "trailingCommas": "all",
       "semicolons": "asNeeded"
     }
+  },
+  "files": {
+    "ignore": ["./dist"]
   }
 }
