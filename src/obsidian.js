@@ -1,3 +1,7 @@
+/**
+ * Expose Obsidian API when running in Obsidian, and mocks when running tests
+ */
+
 let Plugin = class {}
 let MarkdownRenderer = {}
 let MarkdownRenderChild = class {}
