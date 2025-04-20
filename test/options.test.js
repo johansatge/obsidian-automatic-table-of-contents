@@ -1,4 +1,4 @@
-const { parseOptionsFromSourceText } = require('../main.js')
+const { parseOptionsFromSourceText } = require('../src/options.js')
 
 describe('Options', () => {
   test('Returns default options if none are specified', () => {

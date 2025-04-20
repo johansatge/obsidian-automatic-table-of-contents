@@ -78,14 +78,15 @@ The following options are available:
 
 ## Publish a new version
 
+- Build the plugin with `npm run build` (`--watch` during dev)
 - Push a commit with the new version number as message with:
   - The relevant changelog in `README.md`
-  - The new version number in `manifest.json`
+  - The new version number in `package.json:obsidianManifest`
 - Tag the commit with the version number
 - Publish a [new GitHub release](https://github.com/johansatge/obsidian-automatic-table-of-contents/releases/new) with:
   - The version number as title
   - The changelog from `README.md` as description
-  - `main.js` and `manifest.json` as attachments
+  - `dist/main.js` and `dist/manifest.json` from as attachments
   - _Set as the latest release_ checked
 
 ## Changelog
