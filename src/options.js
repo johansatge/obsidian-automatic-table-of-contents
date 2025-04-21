@@ -42,6 +42,10 @@ module.exports = {
   parseOptionsFromSourceText,
 }
 
+/**
+ * Get readable options to be inserted with the TOC command
+ * @return {string}
+ */
 function getOptionsDocs() {
   const markdown = []
   for (const optionName of Object.keys(availableOptions)) {
@@ -52,6 +56,11 @@ function getOptionsDocs() {
   return markdown.join('\n')
 }
 
+/**
+ * Get an options object from a source text (got from the TOC code block)
+ * @param {string} sourceText
+ * @return {Object}
+ */
 function parseOptionsFromSourceText(sourceText = '') {
   const options = {}
   for (const option of Object.keys(availableOptions)) {
@@ -66,6 +75,14 @@ function parseOptionsFromSourceText(sourceText = '') {
   return options
 }
 
+/**
+ * Parse an option from a source line
+ * @param {string} line - The source line to parse (e.g., "optionName: value # comment")
+ * @return {null|Object} Parsed option object or null if invalid
+ * @property {string} name - The option name
+ * @property {number|boolean|string|RegExp} value - The parsed value (type depends on option)
+ * @throws {Error} When invalid value format detected for the option type
+ */
 function parseOptionFromSourceLine(line) {
   const matches = line.match(/([a-zA-Z0-9._ ]+):(.*)/)
   if (line.startsWith('#') || !matches) return null
@@ -92,6 +109,14 @@ function parseOptionFromSourceLine(line) {
   }
   if (optionParams && optionParams.type === 'string') {
     return { name: possibleName, value: possibleValue }
+  }
+  if (optionParams && optionParams.type === 'regexp') {
+    try {
+      const regexp = new RegExp(possibleValue, 'gi')
+      return { name: possibleName, value: regexp }
+    } catch {
+      throw valueError
+    }
   }
   return null
 }
