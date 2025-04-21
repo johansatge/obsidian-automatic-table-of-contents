@@ -5,7 +5,6 @@ const manifest = require('./manifest.json')
 const esbuild = require('esbuild')
 
 const srcDir = path.join(__dirname, 'src')
-const distDir = path.join(__dirname, 'dist')
 
 build()
 const isWatching = process.argv.includes('--watch')
@@ -22,14 +21,6 @@ async function buildOnChange() {
 async function build() {
   try {
     const startTime = new Date().getTime()
-    try {
-      await fsp.rm(distDir, { recursive: true })
-    } catch {
-      // nothing
-    }
-    await fsp.mkdir(distDir, { recursive: true })
-    await fsp.writeFile(path.join(distDir, 'manifest.json'), JSON.stringify(manifest), 'utf8')
-    await fsp.writeFile(path.join(distDir, '.hotreload'), '', 'utf8')
     await buildJs()
     const endTime = new Date().getTime()
     console.log(`Built in ${endTime - startTime}ms`)
@@ -50,7 +41,7 @@ async function buildJs() {
     minify: true,
     entryNames: '[name]',
     external: ['obsidian'],
-    outdir: distDir,
+    outdir: __dirname,
     banner: {
       js: `// ${manifest.name} ${manifest.version} (${manifest.authorUrl})`,
     },

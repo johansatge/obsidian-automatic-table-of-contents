@@ -20,6 +20,6 @@
     }
   },
   "files": {
-    "ignore": ["./dist"]
+    "ignore": ["./main.js"]
   }
 }

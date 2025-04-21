@@ -86,7 +86,7 @@ The following options are available:
 - Publish a [new GitHub release](https://github.com/johansatge/obsidian-automatic-table-of-contents/releases/new) with:
   - The version number as title
   - The changelog from `README.md` as description
-  - `dist/main.js` and `dist/manifest.json` from as attachments
+  - `main.js` and `manifest.json` from as attachments
   - _Set as the latest release_ checked
 
 ## Changelog
