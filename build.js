@@ -1,7 +1,7 @@
 const fs = require('node:fs')
 const fsp = require('node:fs').promises
 const path = require('node:path')
-const pkg = require('./package.json')
+const manifest = require('./manifest.json')
 const esbuild = require('esbuild')
 
 const srcDir = path.join(__dirname, 'src')
@@ -28,8 +28,7 @@ async function build() {
       // nothing
     }
     await fsp.mkdir(distDir, { recursive: true })
-    const manifest = JSON.stringify(pkg.obsidianManifest)
-    await fsp.writeFile(path.join(distDir, 'manifest.json'), manifest, 'utf8')
+    await fsp.writeFile(path.join(distDir, 'manifest.json'), JSON.stringify(manifest), 'utf8')
     await fsp.writeFile(path.join(distDir, '.hotreload'), '', 'utf8')
     await buildJs()
     const endTime = new Date().getTime()
@@ -44,7 +43,6 @@ async function build() {
 }
 
 async function buildJs() {
-  const manifest = pkg.obsidianManifest
   const result = await esbuild.build({
     entryPoints: [path.join(srcDir, 'main.js')],
     format: 'cjs',
