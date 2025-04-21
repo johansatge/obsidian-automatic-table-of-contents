@@ -58,4 +58,28 @@ Some title: Title 1 level 2 | Title 2 level 2 | Title 3 level 2
 `)
     expect(md).toEqual(expectedMd)
   })
+
+  test('Returns flat list with includes', () => {
+    const options = parseOptionsFromSourceText('')
+    options.style = 'inlineFirstLevel'
+    options.include = /title [13]/i
+    options.includeLinks = false
+    const md = getMarkdownFromHeadings(testStandardHeadings, options)
+    const expectedMd = sanitizeMd(`
+Title 1 level 1 | Title 3 level 1
+`)
+    expect(md).toEqual(expectedMd)
+  })
+
+  test('Returns flat list with excludes', () => {
+    const options = parseOptionsFromSourceText('')
+    options.style = 'inlineFirstLevel'
+    options.exclude = /Title [13]/
+    options.includeLinks = false
+    const md = getMarkdownFromHeadings(testStandardHeadings, options)
+    const expectedMd = sanitizeMd(`
+Title 2 level 1
+`)
+    expect(md).toEqual(expectedMd)
+  })
 })

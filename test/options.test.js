@@ -6,9 +6,11 @@ describe('Options', () => {
     expect(options).toEqual({
       title: '',
       style: 'nestedList',
-      includeLinks: true,
       minLevel: 0,
       maxLevel: 0,
+      include: null,
+      exclude: null,
+      includeLinks: true,
       hideWhenEmpty: false,
       debugInConsole: false,
     })
@@ -20,6 +22,8 @@ describe('Options', () => {
       style: inlineFirstLevel # Some comment
       minLevel: 1
       maxLevel:  2   # Some other comment
+      include: /test1/
+      exclude: /test#2/gi
       includeLinks: false
       hideWhenEmpty: true
       debugInConsole: true
@@ -28,9 +32,11 @@ describe('Options', () => {
     expect(options).toEqual({
       title: '# Some title',
       style: 'inlineFirstLevel',
-      includeLinks: false,
       minLevel: 1,
       maxLevel: 2,
+      include: /test1/,
+      exclude: /test#2/gi,
+      includeLinks: false,
       hideWhenEmpty: true,
       debugInConsole: true,
     })
@@ -70,6 +76,22 @@ describe('Options', () => {
       try {
         const options = parseOptionsFromSourceText('maxLevel: -1')
         expect(options.maxLevel).toEqual('Should have thrown')
+      } catch (error) {
+        expect(error.message).toContain('Invalid value')
+      }
+    })
+    test('On include', () => {
+      try {
+        const options = parseOptionsFromSourceText('include: [)')
+        expect(options.include).toEqual('Should have thrown')
+      } catch (error) {
+        expect(error.message).toContain('Invalid value')
+      }
+    })
+    test('On exclude', () => {
+      try {
+        const options = parseOptionsFromSourceText('exclude: /test')
+        expect(options.exclude).toEqual('Should have thrown')
       } catch (error) {
         expect(error.message).toContain('Invalid value')
       }
