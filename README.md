@@ -98,6 +98,7 @@ This project uses [semver](http://semver.org/).
 
 | Version | Date | Notes |
 | --- | --- | --- |
+| `1.7.0` | 2025-04-27 | Add `include` & `exclude` options (fix #46) |
 | `1.6.1` | 2025-02-23 | Inline title when `style:inlineFirstLevel` (fix #59) |
 | `1.6.0` | 2025-02-23 | Ignore empty headings (fix #60) |
 | `1.5.1` | 2025-01-18 | Rename command for readability (fix #53) |
