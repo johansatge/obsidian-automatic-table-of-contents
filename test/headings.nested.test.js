@@ -132,4 +132,29 @@ describe('Nested headings', () => {
 `)
     expect(md).toEqual(expectedMd)
   })
+
+  test('Returns indented list with includes', () => {
+    const options = parseOptionsFromSourceText('')
+    options.includeLinks = false
+    options.include = /(title [23])/i
+    const md = getMarkdownFromHeadings(testStandardHeadings, options)
+    const expectedMd = sanitizeMd(`
+- Title 2 level 1
+- Title 3 level 1
+  - Title 3 level 2
+`)
+    expect(md).toEqual(expectedMd)
+  })
+
+  test('Returns indented list with excludes', () => {
+    const options = parseOptionsFromSourceText('')
+    options.includeLinks = false
+    options.exclude = /(Title 1 level 1|Title 3 level 2)/
+    const md = getMarkdownFromHeadings(testStandardHeadings, options)
+    const expectedMd = sanitizeMd(`
+- Title 2 level 1
+- Title 3 level 1
+`)
+    expect(md).toEqual(expectedMd)
+  })
 })

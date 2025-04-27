@@ -20,6 +20,16 @@ const availableOptions = {
     default: 0,
     comment: 'Include headings up to the specified level',
   },
+  include: {
+    type: 'regexp',
+    default: null,
+    comment: '',
+  },
+  exclude: {
+    type: 'regexp',
+    default: null,
+    comment: '',
+  },
   includeLinks: {
     type: 'boolean',
     default: true,
@@ -89,8 +99,8 @@ function parseOptionFromSourceLine(line) {
   const possibleName = matches[1].trim()
   const optionParams = availableOptions[possibleName]
   let possibleValue = matches[2].trim()
-  if (!optionParams || optionParams.type !== 'string') {
-    // Strip comments from values except for strings (as a string may contain markdown)
+  if (!optionParams || !['string', 'regexp'].includes(optionParams.type)) {
+    // Strip comments from values except for strings & regexp (as a string or regex may contain "#")
     possibleValue = possibleValue.replace(/#[^#]*$/, '').trim()
   }
   const valueError = new Error(`Invalid value for \`${possibleName}\``)
@@ -112,7 +122,9 @@ function parseOptionFromSourceLine(line) {
   }
   if (optionParams && optionParams.type === 'regexp') {
     try {
-      const regexp = new RegExp(possibleValue, 'gi')
+      const match = /^\/(.*)\/([a-z]*)/.exec(possibleValue)
+      if (!match) throw new Error('Invalid regexp')
+      const regexp = new RegExp(match[1], match[2])
       return { name: possibleName, value: regexp }
     } catch {
       throw valueError

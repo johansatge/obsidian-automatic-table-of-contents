@@ -1,4 +1,4 @@
-const { getFormattedMarkdownHeading } = require('./markdown.js')
+const { isHeadingAllowed, getFormattedMarkdownHeading } = require('./markdown.js')
 
 module.exports = {
   getMarkdownFromHeadings,
@@ -38,7 +38,16 @@ function getMarkdownListFromHeadings(headings, isOrdered, options) {
   const lines = []
   const minLevel =
     options.minLevel > 0 ? options.minLevel : Math.min(...headings.map((heading) => heading.level))
+  let unallowedLevel = 0
   for (const heading of headings) {
+    if (unallowedLevel > 0 && heading.level > unallowedLevel) continue
+    if (heading.level <= unallowedLevel) {
+      unallowedLevel = 0
+    }
+    if (!isHeadingAllowed(heading.heading, options)) {
+      unallowedLevel = heading.level
+      continue
+    }
     if (heading.level < minLevel) continue
     if (options.maxLevel > 0 && heading.level > options.maxLevel) continue
     if (heading.heading.length === 0) continue
@@ -55,6 +64,7 @@ function getMarkdownInlineFirstLevelFromHeadings(headings, options) {
   const items = headings
     .filter((heading) => heading.level === minLevel)
     .filter((heading) => heading.heading.length > 0)
+    .filter((heading) => isHeadingAllowed(heading.heading, options))
     .map((heading) => {
       return getFormattedMarkdownHeading(heading.heading, options)
     })

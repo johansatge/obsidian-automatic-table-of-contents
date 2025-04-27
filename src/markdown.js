@@ -1,7 +1,24 @@
 const { htmlToMarkdown } = require('./obsidian.js')
 
 module.exports = {
+  isHeadingAllowed,
   getFormattedMarkdownHeading,
+}
+
+/**
+ * Check if given heading is allowed depending on options
+ * @param {string} label
+ * @param {object} options
+ * @return {boolean}
+ */
+function isHeadingAllowed(label, options) {
+  if (options.include) {
+    return options.include.test(label)
+  }
+  if (options.exclude) {
+    return !options.exclude.test(label)
+  }
+  return true
 }
 
 /**
