@@ -87,5 +87,5 @@ function stripWikilinks(text, isForLink) {
 }
 
 function stripTags(text) {
-  return text.replaceAll('#', '')
+  return text.replaceAll('#', ' ')
 }
