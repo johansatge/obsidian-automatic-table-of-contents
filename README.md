@@ -85,6 +85,7 @@ The following options are available:
 - Push a commit with the new version number as message with:
   - The relevant changelog in `README.md`
   - The new version number in `manifest.json`
+  - The updated `main.js` (with `npm run build`)
 - Tag the commit with the version number
 - Publish a [new GitHub release](https://github.com/johansatge/obsidian-automatic-table-of-contents/releases/new) with:
   - The version number as title
@@ -98,6 +99,7 @@ This project uses [semver](http://semver.org/).
 
 | Version | Date | Notes |
 | --- | --- | --- |
+| `1.7.1` | 2025-05-02 | Fix `#` in wikilinks (fix #64) |
 | `1.7.0` | 2025-04-27 | Add `include` & `exclude` options (fix #46) |
 | `1.6.1` | 2025-02-23 | Inline title when `style:inlineFirstLevel` (fix #59) |
 | `1.6.0` | 2025-02-23 | Ignore empty headings (fix #60) |
