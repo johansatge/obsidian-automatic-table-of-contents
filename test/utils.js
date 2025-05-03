@@ -24,7 +24,7 @@ const testHeadingsWithoutFirstLevel = [
 const testHeadingsWithSpecialChars = [
   {
     heading:
-      'Title 1 `level 1` {with special chars}, **bold**, _italic_,#a-tag, ==highlighted== and ~~strikethrough~~ text',
+      'Title 1 `level 1` {with special chars}, **bold**, _some_italic_,#a-tag, ==highlighted== and ~~strikethrough~~ text',
     level: 1,
   },
   { heading: 'Title 1 level 2 <em style="color: black">with HTML</em>', level: 2 },
