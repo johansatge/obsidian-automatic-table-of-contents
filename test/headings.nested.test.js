@@ -112,7 +112,7 @@ describe('Nested headings', () => {
     const options = parseOptionsFromSourceText('')
     const md = getMarkdownFromHeadings(testHeadingsWithSpecialChars, options)
     const expectedMd = sanitizeMd(`
-- [[#Title 1 \`level 1\` {with special chars}, **bold**, _italic_, a-tag, ==highlighted== and ~~strikethrough~~ text|Title 1 level 1 {with special chars}, bold, italic,#a-tag, highlighted and strikethrough text]]
+- [[#Title 1 \`level 1\` {with special chars}, **bold**, _some_italic_, a-tag, ==highlighted== and ~~strikethrough~~ text|Title 1 level 1 {with special chars}, bold, some_italic,#a-tag, highlighted and strikethrough text]]
   - [[#Title 1 level 2 <em style="color: black">with HTML</em>|Title 1 level 2 <em style="color: black">with HTML</em>]]
   - [[#Title 1 level 2 wikilink1 wikilink2 wikitext2 [mdlink](https://mdurl)|Title 1 level 2 wikilink1 wikitext2 mdlink]]
   - [[#Title 1 level 2 malformedlink a pi pe and [other chars]|Title 1 level 2 malformedlink a pi-pe - and [other chars]]]
@@ -125,7 +125,7 @@ describe('Nested headings', () => {
     options.includeLinks = false
     const md = getMarkdownFromHeadings(testHeadingsWithSpecialChars, options)
     const expectedMd = sanitizeMd(`
-- Title 1 \`level 1\` {with special chars}, **bold**, _italic_,#a-tag, ==highlighted== and ~~strikethrough~~ text
+- Title 1 \`level 1\` {with special chars}, **bold**, _some_italic_,#a-tag, ==highlighted== and ~~strikethrough~~ text
   - Title 1 level 2 <em style="color: black">with HTML</em>
   - Title 1 level 2 [[wikilink1]] [[wikilink2|wikitext2]] [mdlink](https://mdurl)
   - Title 1 level 2 [[malformedlink a pi|pe | and [other chars]

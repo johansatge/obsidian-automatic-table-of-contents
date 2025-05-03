@@ -59,7 +59,7 @@ function getFormattedMarkdownHeading(label, options) {
 function stripMarkdown(text) {
   return text
     .replaceAll('*', '')
-    .replaceAll('_', '')
+    .replaceAll(/(\W|^)_+(\S)(.*?\S)?_+(\W|$)/g, '$1$2$3$4')
     .replaceAll('`', '')
     .replaceAll('==', '')
     .replaceAll('~~', '')
