@@ -99,6 +99,7 @@ This project uses [semver](http://semver.org/).
 
 | Version | Date | Notes |
 | --- | --- | --- |
+| `1.7.2` | 2025-05-03 | Fix italic stripping (fix #43) |
 | `1.7.1` | 2025-05-02 | Fix `#` in wikilinks (fix #64) |
 | `1.7.0` | 2025-04-27 | Add `include` & `exclude` options (fix #46) |
 | `1.6.1` | 2025-02-23 | Inline title when `style:inlineFirstLevel` (fix #59) |
