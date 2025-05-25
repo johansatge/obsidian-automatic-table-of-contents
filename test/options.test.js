@@ -55,6 +55,15 @@ describe('Options', () => {
     expect(options.maxLevel).toEqual(5)
   })
 
+  test('Ignores empty regexes', () => {
+    const options = parseOptionsFromSourceText(`
+      include: 
+      exclude: null
+    `)
+    expect(options.include).toBeNull()
+    expect(options.exclude).toBeNull()
+  })
+
   describe('Throw an error if the option value is invalid', () => {
     test('On style', () => {
       try {
