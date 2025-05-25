@@ -61,7 +61,8 @@ function getOptionsDocs() {
   for (const optionName of Object.keys(availableOptions)) {
     const option = availableOptions[optionName]
     const comment = option.comment.length > 0 ? ` # ${option.comment}` : ''
-    markdown.push(`${optionName}: ${option.default}${comment}`)
+    const def = option.default !== null ? option.default : ''
+    markdown.push(`${optionName}: ${def}${comment}`)
   }
   return markdown.join('\n')
 }
@@ -121,6 +122,7 @@ function parseOptionFromSourceLine(line) {
     return { name: possibleName, value: possibleValue }
   }
   if (optionParams && optionParams.type === 'regexp') {
+    if (possibleValue === 'null' || possibleValue.length === 0) return null
     try {
       const match = /^\/(.*)\/([a-z]*)/.exec(possibleValue)
       if (!match) throw new Error('Invalid regexp')
