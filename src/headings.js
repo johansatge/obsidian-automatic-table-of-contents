@@ -39,7 +39,12 @@ function getMarkdownListFromHeadings(headings, isOrdered, options) {
   const minLevel =
     options.minLevel > 0 ? options.minLevel : Math.min(...headings.map((heading) => heading.level))
   let unallowedLevel = 0
-  for (const heading of headings) {
+
+  // Apply startAt filter
+  const startAtIndex = options.startAt || 0
+  const filteredHeadings = headings.slice(startAtIndex)
+
+  for (const heading of filteredHeadings) {
     if (unallowedLevel > 0 && heading.level > unallowedLevel) continue
     if (heading.level <= unallowedLevel) {
       unallowedLevel = 0
@@ -61,7 +66,12 @@ function getMarkdownListFromHeadings(headings, isOrdered, options) {
 function getMarkdownInlineFirstLevelFromHeadings(headings, options) {
   const minLevel =
     options.minLevel > 0 ? options.minLevel : Math.min(...headings.map((heading) => heading.level))
-  const items = headings
+  
+  // Apply startAt filter
+  const startAtIndex = options.startAt || 0
+  const filteredHeadings = headings.slice(startAtIndex)
+  
+  const items = filteredHeadings
     .filter((heading) => heading.level === minLevel)
     .filter((heading) => heading.heading.length > 0)
     .filter((heading) => isHeadingAllowed(heading.heading, options))
