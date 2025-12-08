@@ -70,13 +70,31 @@ function getOptionsDocs() {
 /**
  * Get an options object from a source text (got from the TOC code block)
  * @param {string} sourceText
+ * @param {Object} pluginSettings - Optional plugin settings to use as defaults
  * @return {Object}
  */
-function parseOptionsFromSourceText(sourceText = '') {
+function parseOptionsFromSourceText(sourceText = '', pluginSettings = null) {
   const options = {}
-  for (const option of Object.keys(availableOptions)) {
-    options[option] = availableOptions[option].default
+
+  // Set defaults from plugin settings if available, otherwise use hardcoded defaults
+  if (pluginSettings) {
+    options.title = pluginSettings.defaultTitle
+    options.style = pluginSettings.defaultStyle
+    options.minLevel = pluginSettings.defaultMinLevel
+    options.maxLevel = pluginSettings.defaultMaxLevel
+    options.includeLinks = pluginSettings.defaultIncludeLinks
+    options.hideWhenEmpty = pluginSettings.defaultHideWhenEmpty
+    // These options don't have plugin settings equivalents
+    options.include = availableOptions.include.default
+    options.exclude = availableOptions.exclude.default
+    options.debugInConsole = availableOptions.debugInConsole.default
+  } else {
+    for (const option of Object.keys(availableOptions)) {
+      options[option] = availableOptions[option].default
+    }
   }
+
+  // Parse overrides from codeblock source text
   for (const line of sourceText.split('\n')) {
     const option = parseOptionFromSourceLine(line)
     if (option !== null) {
@@ -119,6 +137,10 @@ function parseOptionFromSourceLine(line) {
     return { name: possibleName, value: possibleValue }
   }
   if (optionParams && optionParams.type === 'string') {
+    // Allow explicitly setting empty string to override default
+    if (possibleValue === 'null' || possibleValue === '""' || possibleValue === "''") {
+      return { name: possibleName, value: '' }
+    }
     return { name: possibleName, value: possibleValue }
   }
   if (optionParams && optionParams.type === 'regexp') {
