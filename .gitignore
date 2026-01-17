@@ -1,2 +1,4 @@
 # https://github.com/pjeby/hot-reload
 .hotreload
+# Plugin settings
+data.json
