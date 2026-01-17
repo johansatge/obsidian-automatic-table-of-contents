@@ -1,12 +1,13 @@
-const { PluginSettingTab, Setting } = require('./obsidian.js')
+const { PluginSettingTab, Setting, SettingGroup } = require('./obsidian.js')
+const { DEFAULT_OPTIONS } = require('./defaults.js')
 
 const DEFAULT_SETTINGS = {
-  defaultTitle: '## Table of Contents',
-  defaultStyle: 'nestedList',
-  defaultMinLevel: 0,
-  defaultMaxLevel: 0,
-  defaultIncludeLinks: true,
-  defaultHideWhenEmpty: false,
+  defaultTitle: DEFAULT_OPTIONS.title,
+  defaultStyle: DEFAULT_OPTIONS.style,
+  defaultMinLevel: DEFAULT_OPTIONS.minLevel,
+  defaultMaxLevel: DEFAULT_OPTIONS.maxLevel,
+  defaultIncludeLinks: DEFAULT_OPTIONS.includeLinks,
+  defaultHideWhenEmpty: DEFAULT_OPTIONS.hideWhenEmpty,
 }
 
 class SettingsTab extends PluginSettingTab {
@@ -19,88 +20,109 @@ class SettingsTab extends PluginSettingTab {
     const { containerEl } = this
 
     containerEl.empty()
-    containerEl.createEl('h2', { text: 'Automatic Table of Contents Settings' })
 
-    new Setting(containerEl)
-      .setName('Default title')
-      .setDesc(
-        'Default title to display before the table of contents (supports Markdown). Use empty string for no title.',
-      )
-      .addText((text) =>
-        text
-          .setPlaceholder('## Table of Contents')
-          .setValue(this.plugin.settings.defaultTitle)
-          .onChange(async (value) => {
-            this.plugin.settings.defaultTitle = value
-            await this.plugin.saveSettings()
-          }),
-      )
+    const heading = document.createDocumentFragment()
+    heading.createDiv({ cls: 'setting-item-name', text: 'Default options' })
+    heading.createDiv({
+      cls: 'setting-item-description',
+      text: 'Configure default options. They can be overridden per codeblock when inserting the table of contents in a page.',
+    })
 
-    new Setting(containerEl)
-      .setName('Default style')
-      .setDesc('Default table of contents style')
-      .addDropdown((dropdown) =>
-        dropdown
-          .addOption('nestedList', 'Nested List')
-          .addOption('nestedOrderedList', 'Nested Ordered List')
-          .addOption('inlineFirstLevel', 'Inline First Level')
-          .setValue(this.plugin.settings.defaultStyle)
-          .onChange(async (value) => {
-            this.plugin.settings.defaultStyle = value
-            await this.plugin.saveSettings()
-          }),
+    new SettingGroup(containerEl)
+      .setHeading(heading)
+      .addSetting((setting) =>
+        setting
+          .setName('Title')
+          .setDesc(
+            'Title to display before the table of contents (supports Markdown). Use empty string for no title.',
+          )
+          .addText((text) =>
+            text
+              .setPlaceholder('')
+              .setValue(this.plugin.settings.defaultTitle)
+              .onChange(async (value) => {
+                this.plugin.settings.defaultTitle = value
+                await this.plugin.saveSettings()
+              }),
+          ),
       )
-
-    new Setting(containerEl)
-      .setName('Default minimum level')
-      .setDesc('Include headings from the specified level (0 for no limit)')
-      .addText((text) =>
-        text
-          .setPlaceholder('0')
-          .setValue(String(this.plugin.settings.defaultMinLevel))
-          .onChange(async (value) => {
-            const numValue = Number.parseInt(value)
-            if (!Number.isNaN(numValue) && numValue >= 0) {
-              this.plugin.settings.defaultMinLevel = numValue
+      .addSetting((setting) =>
+        setting
+          .setName('Style')
+          .setDesc('Table of contents style')
+          .addDropdown((dropdown) =>
+            dropdown
+              .addOption('nestedList', 'Nested List')
+              .addOption('nestedOrderedList', 'Nested Ordered List')
+              .addOption('inlineFirstLevel', 'Inline First Level')
+              .setValue(this.plugin.settings.defaultStyle)
+              .onChange(async (value) => {
+                this.plugin.settings.defaultStyle = value
+                await this.plugin.saveSettings()
+              }),
+          ),
+      )
+      .addSetting((setting) =>
+        setting
+          .setName('Minimum level')
+          .setDesc('Include headings from the specified level (0 for no limit)')
+          .addText((text) =>
+            text
+              .setPlaceholder('0')
+              .setValue(String(this.plugin.settings.defaultMinLevel))
+              .onChange(async (value) => {
+                const numValue = Number.parseInt(value)
+                if (!Number.isNaN(numValue) && numValue >= 0) {
+                  this.plugin.settings.defaultMinLevel = numValue
+                  await this.plugin.saveSettings()
+                } else {
+                  // Reset to current valid value on invalid input
+                  text.setValue(String(this.plugin.settings.defaultMinLevel))
+                }
+              }),
+          ),
+      )
+      .addSetting((setting) =>
+        setting
+          .setName('Maximum level')
+          .setDesc('Include headings up to the specified level (0 for no limit)')
+          .addText((text) =>
+            text
+              .setPlaceholder('0')
+              .setValue(String(this.plugin.settings.defaultMaxLevel))
+              .onChange(async (value) => {
+                const numValue = Number.parseInt(value)
+                if (!Number.isNaN(numValue) && numValue >= 0) {
+                  this.plugin.settings.defaultMaxLevel = numValue
+                  await this.plugin.saveSettings()
+                } else {
+                  // Reset to current valid value on invalid input
+                  text.setValue(String(this.plugin.settings.defaultMaxLevel))
+                }
+              }),
+          ),
+      )
+      .addSetting((setting) =>
+        setting
+          .setName('Include links')
+          .setDesc('Make headings clickable by default')
+          .addToggle((toggle) =>
+            toggle.setValue(this.plugin.settings.defaultIncludeLinks).onChange(async (value) => {
+              this.plugin.settings.defaultIncludeLinks = value
               await this.plugin.saveSettings()
-            }
-          }),
+            }),
+          ),
       )
-
-    new Setting(containerEl)
-      .setName('Default maximum level')
-      .setDesc('Include headings up to the specified level (0 for no limit)')
-      .addText((text) =>
-        text
-          .setPlaceholder('0')
-          .setValue(String(this.plugin.settings.defaultMaxLevel))
-          .onChange(async (value) => {
-            const numValue = Number.parseInt(value)
-            if (!Number.isNaN(numValue) && numValue >= 0) {
-              this.plugin.settings.defaultMaxLevel = numValue
+      .addSetting((setting) =>
+        setting
+          .setName('Hide when empty')
+          .setDesc('Hide table of contents if no headings are found by default')
+          .addToggle((toggle) =>
+            toggle.setValue(this.plugin.settings.defaultHideWhenEmpty).onChange(async (value) => {
+              this.plugin.settings.defaultHideWhenEmpty = value
               await this.plugin.saveSettings()
-            }
-          }),
-      )
-
-    new Setting(containerEl)
-      .setName('Default include links')
-      .setDesc('Make headings clickable by default')
-      .addToggle((toggle) =>
-        toggle.setValue(this.plugin.settings.defaultIncludeLinks).onChange(async (value) => {
-          this.plugin.settings.defaultIncludeLinks = value
-          await this.plugin.saveSettings()
-        }),
-      )
-
-    new Setting(containerEl)
-      .setName('Default hide when empty')
-      .setDesc('Hide table of contents if no headings are found by default')
-      .addToggle((toggle) =>
-        toggle.setValue(this.plugin.settings.defaultHideWhenEmpty).onChange(async (value) => {
-          this.plugin.settings.defaultHideWhenEmpty = value
-          await this.plugin.saveSettings()
-        }),
+            }),
+          ),
       )
   }
 }

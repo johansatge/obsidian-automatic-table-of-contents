@@ -4,6 +4,7 @@
     "biome-check": "biome check --verbose",
     "biome-ci": "biome ci",
     "jest": "jest --config=test/jest.config.js",
+    "jest:coverage": "jest --config=test/jest.config.js --coverage",
     "build": "node build.js"
   },
   "devDependencies": {

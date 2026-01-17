@@ -7,6 +7,7 @@ let MarkdownRenderer = {}
 let MarkdownRenderChild = class {}
 let PluginSettingTab = class {}
 let Setting = class {}
+let SettingGroup = class {}
 let htmlToMarkdown = (html) => html
 
 if (isObsidian()) {
@@ -16,6 +17,7 @@ if (isObsidian()) {
   MarkdownRenderChild = obsidian.MarkdownRenderChild
   PluginSettingTab = obsidian.PluginSettingTab
   Setting = obsidian.Setting
+  SettingGroup = obsidian.SettingGroup
   htmlToMarkdown = obsidian.htmlToMarkdown
 }
 
@@ -25,6 +27,7 @@ module.exports = {
   MarkdownRenderChild,
   PluginSettingTab,
   Setting,
+  SettingGroup,
   htmlToMarkdown,
 }
 

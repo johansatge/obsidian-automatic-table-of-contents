@@ -28,6 +28,11 @@ class ObsidianAutomaticTableOfContents extends Plugin {
     this.addSettingTab(new SettingsTab(this.app, this))
   }
 
+  onunload() {
+    // Cleanup is handled automatically by registerMarkdownCodeBlockProcessor,
+    // registerEvent, and addCommand
+  }
+
   async loadSettings() {
     this.settings = Object.assign({}, DEFAULT_SETTINGS, await this.loadData())
   }
@@ -60,7 +65,14 @@ class Renderer extends MarkdownRenderChild {
   // Render on load
   onload() {
     this.render()
-    this.registerEvent(this.app.metadataCache.on('changed', this.onMetadataChange.bind(this)))
+    this.registerEvent(
+      this.app.metadataCache.on('changed', (file) => {
+        // Only re-render if the current file has changed
+        if (file.path === this.sourcePath) {
+          this.onMetadataChange()
+        }
+      }),
+    )
   }
 
   // Render on file change
@@ -83,6 +95,7 @@ class Renderer extends MarkdownRenderChild {
       this.element.empty()
       MarkdownRenderer.renderMarkdown(markdown, this.element, this.sourcePath, this)
     } catch (error) {
+      debug('Error', error)
       const readableError = `_💥 Could not render table of contents (${error.message})_`
       MarkdownRenderer.renderMarkdown(readableError, this.element, this.sourcePath, this)
     }

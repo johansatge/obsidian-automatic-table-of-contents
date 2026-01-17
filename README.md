@@ -2,7 +2,8 @@
 
 [![Downloads](https://img.shields.io/badge/dynamic/json?logo=obsidian&color=%23483699&label=downloads&query=%24%5B%22automatic-table-of-contents%22%5D.downloads&url=https%3A%2F%2Fraw.githubusercontent.com%2Fobsidianmd%2Fobsidian-releases%2Fmaster%2Fcommunity-plugin-stats.json)](https://obsidian.md/plugins?search=automatic%20table%20of%20contents)
 [![Version](https://img.shields.io/github/v/release/johansatge/obsidian-automatic-table-of-contents)](https://github.com/johansatge/obsidian-automatic-table-of-contents/releases)
-[![Test](https://github.com/johansatge/obsidian-automatic-table-of-contents/actions/workflows/test.yml/badge.svg)](https://github.com/johansatge/obsidian-automatic-table-of-contents/actions)
+[![Test status](https://github.com/johansatge/obsidian-automatic-table-of-contents/actions/workflows/test.yml/badge.svg)](https://github.com/johansatge/obsidian-automatic-table-of-contents/actions/workflows/test.yml)
+[![codecov](https://codecov.io/gh/johansatge/obsidian-automatic-table-of-contents/branch/main/graph/badge.svg)](https://codecov.io/gh/johansatge/obsidian-automatic-table-of-contents)
 
 > An Obsidian plugin to create a table of contents in a note, that updates itself when the note changes
 
@@ -55,6 +56,11 @@ Alternatively, two commands are available in the command palette:
 
 - Insert table of contents
 - Insert table of contents (with available options)
+
+### Available options
+
+Most options can have a default value configured in the plugin settings (Settings → Community plugins → Automatic Table of Contents).
+These defaults will be used for all tables of contents in your vault, unless overridden in individual codeblocks.
 
 The following options are available:
 
