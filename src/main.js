@@ -1,14 +1,17 @@
 const { Plugin, MarkdownRenderer, MarkdownRenderChild } = require('./obsidian.js')
 const { getOptionsDocs, parseOptionsFromSourceText } = require('./options.js')
 const { getMarkdownFromHeadings } = require('./headings.js')
+const { DEFAULT_SETTINGS, SettingsTab } = require('./settings.js')
 
 const codeblockId = 'table-of-contents'
 const codeblockIdShort = 'toc'
 
 class ObsidianAutomaticTableOfContents extends Plugin {
   async onload() {
+    await this.loadSettings()
+
     const handler = (sourceText, element, context) => {
-      context.addChild(new Renderer(this.app, element, context.sourcePath, sourceText))
+      context.addChild(new Renderer(this.app, element, context.sourcePath, sourceText, this.settings))
     }
     this.registerMarkdownCodeBlockProcessor(codeblockId, handler)
     this.registerMarkdownCodeBlockProcessor(codeblockIdShort, handler)
@@ -22,6 +25,15 @@ class ObsidianAutomaticTableOfContents extends Plugin {
       name: 'Insert table of contents (with available options)',
       editorCallback: onInsertTocWithDocs,
     })
+    this.addSettingTab(new SettingsTab(this.app, this))
+  }
+
+  async loadSettings() {
+    this.settings = Object.assign({}, DEFAULT_SETTINGS, await this.loadData())
+  }
+
+  async saveSettings() {
+    await this.saveData(this.settings)
   }
 }
 
@@ -36,12 +48,13 @@ function onInsertTocWithDocs(editor) {
 }
 
 class Renderer extends MarkdownRenderChild {
-  constructor(app, element, sourcePath, sourceText) {
+  constructor(app, element, sourcePath, sourceText, pluginSettings) {
     super(element)
     this.app = app
     this.element = element
     this.sourcePath = sourcePath
     this.sourceText = sourceText
+    this.pluginSettings = pluginSettings
   }
 
   // Render on load
@@ -57,7 +70,7 @@ class Renderer extends MarkdownRenderChild {
 
   render() {
     try {
-      const options = parseOptionsFromSourceText(this.sourceText)
+      const options = parseOptionsFromSourceText(this.sourceText, this.pluginSettings)
       if (options.debugInConsole) debug('Options', options)
 
       const metadata = this.app.metadataCache.getCache(this.sourcePath)
