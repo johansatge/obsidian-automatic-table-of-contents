@@ -16,6 +16,7 @@
   - [From git](#from-git)
   - [From source](#from-source)
 - [Usage and options](#usage-and-options)
+  - [Available options](#available-options)
 - [Limitations and known bugs](#limitations-and-known-bugs)
 - [Publish a new version](#publish-a-new-version)
 - [Changelog](#changelog)
