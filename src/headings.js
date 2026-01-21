@@ -39,6 +39,7 @@ function getMarkdownListFromHeadings(headings, isOrdered, options) {
   const minLevel =
     options.minLevel > 0 ? options.minLevel : Math.min(...headings.map((heading) => heading.level))
   let unallowedLevel = 0
+  let headingIndex = 0
   for (const heading of headings) {
     if (unallowedLevel > 0 && heading.level > unallowedLevel) continue
     if (heading.level <= unallowedLevel) {
@@ -51,9 +52,17 @@ function getMarkdownListFromHeadings(headings, isOrdered, options) {
     if (heading.level < minLevel) continue
     if (options.maxLevel > 0 && heading.level > options.maxLevel) continue
     if (heading.heading.length === 0) continue
+    
+    // Apply startAt filter
+    if (headingIndex < options.startAt) {
+      headingIndex++
+      continue
+    }
+    
     lines.push(
       `${'\t'.repeat(heading.level - minLevel)}${prefix} ${getFormattedMarkdownHeading(heading.heading, options)}`,
     )
+    headingIndex++
   }
   return lines.length > 0 ? lines.join('\n') : null
 }
@@ -61,10 +70,15 @@ function getMarkdownListFromHeadings(headings, isOrdered, options) {
 function getMarkdownInlineFirstLevelFromHeadings(headings, options) {
   const minLevel =
     options.minLevel > 0 ? options.minLevel : Math.min(...headings.map((heading) => heading.level))
-  const items = headings
+  const filteredHeadings = headings
     .filter((heading) => heading.level === minLevel)
     .filter((heading) => heading.heading.length > 0)
     .filter((heading) => isHeadingAllowed(heading.heading, options))
+  
+  // Apply startAt filter
+  const startIndex = options.startAt || 0
+  const items = filteredHeadings
+    .slice(startIndex)
     .map((heading) => {
       return getFormattedMarkdownHeading(heading.heading, options)
     })

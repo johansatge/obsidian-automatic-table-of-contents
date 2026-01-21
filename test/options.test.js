@@ -13,6 +13,7 @@ describe('Options', () => {
       includeLinks: true,
       hideWhenEmpty: false,
       debugInConsole: false,
+      startAt: 0,
     })
   })
 
@@ -27,6 +28,7 @@ describe('Options', () => {
       includeLinks: false
       hideWhenEmpty: true
       debugInConsole: true
+      startAt: 3
     `
     const options = parseOptionsFromSourceText(optionsText)
     expect(options).toEqual({
@@ -39,6 +41,7 @@ describe('Options', () => {
       includeLinks: false,
       hideWhenEmpty: true,
       debugInConsole: true,
+      startAt: 3,
     })
   })
 
@@ -125,6 +128,14 @@ describe('Options', () => {
       try {
         const options = parseOptionsFromSourceText('debugInConsole: yes')
         expect(options.debugInConsole).toEqual('Should have thrown')
+      } catch (error) {
+        expect(error.message).toContain('Invalid value')
+      }
+    })
+    test('On startAt', () => {
+      try {
+        const options = parseOptionsFromSourceText('startAt: -1')
+        expect(options.startAt).toEqual('Should have thrown')
       } catch (error) {
         expect(error.message).toContain('Invalid value')
       }
