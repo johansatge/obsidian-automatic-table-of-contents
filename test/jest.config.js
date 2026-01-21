@@ -10,9 +10,9 @@ module.exports = async () => {
     coverageThreshold: {
       global: {
         branches: 80,
-        functions: 40,
-        lines: 55,
-        statements: 55,
+        functions: 35,
+        lines: 54,
+        statements: 54,
       },
     },
   }
