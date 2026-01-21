@@ -76,9 +76,13 @@ function getOptionsDocs() {
  * @return {Object}
  */
 function parseOptionsFromSourceText(sourceText = '', pluginSettings = null) {
+  // Start with hardcoded defaults
   const options = {}
+  for (const option of Object.keys(availableOptions)) {
+    options[option] = availableOptions[option].default
+  }
 
-  // Set defaults from plugin settings if available, otherwise use hardcoded defaults
+  // Apply plugin settings if available
   if (pluginSettings) {
     options.title = pluginSettings.defaultTitle
     options.style = pluginSettings.defaultStyle
@@ -86,14 +90,6 @@ function parseOptionsFromSourceText(sourceText = '', pluginSettings = null) {
     options.maxLevel = pluginSettings.defaultMaxLevel
     options.includeLinks = pluginSettings.defaultIncludeLinks
     options.hideWhenEmpty = pluginSettings.defaultHideWhenEmpty
-    // These options don't have plugin settings equivalents
-    options.include = availableOptions.include.default
-    options.exclude = availableOptions.exclude.default
-    options.debugInConsole = availableOptions.debugInConsole.default
-  } else {
-    for (const option of Object.keys(availableOptions)) {
-      options[option] = availableOptions[option].default
-    }
   }
 
   // Parse overrides from codeblock source text
