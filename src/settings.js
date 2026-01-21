@@ -105,7 +105,7 @@ class SettingsTab extends PluginSettingTab {
       .addSetting((setting) =>
         setting
           .setName('Include links')
-          .setDesc('Make headings clickable by default')
+          .setDesc('Make headings clickable')
           .addToggle((toggle) =>
             toggle.setValue(this.plugin.settings.defaultIncludeLinks).onChange(async (value) => {
               this.plugin.settings.defaultIncludeLinks = value
@@ -116,7 +116,7 @@ class SettingsTab extends PluginSettingTab {
       .addSetting((setting) =>
         setting
           .setName('Hide when empty')
-          .setDesc('Hide table of contents if no headings are found by default')
+          .setDesc('Hide TOC if no headings are found')
           .addToggle((toggle) =>
             toggle.setValue(this.plugin.settings.defaultHideWhenEmpty).onChange(async (value) => {
               this.plugin.settings.defaultHideWhenEmpty = value
