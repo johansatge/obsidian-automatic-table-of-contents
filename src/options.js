@@ -1,23 +1,25 @@
+const { DEFAULT_OPTIONS } = require('./defaults.js')
+
 const availableOptions = {
   title: {
     type: 'string',
-    default: '',
+    default: DEFAULT_OPTIONS.title,
     comment: '',
   },
   style: {
     type: 'value',
-    default: 'nestedList',
+    default: DEFAULT_OPTIONS.style,
     values: ['nestedList', 'nestedOrderedList', 'inlineFirstLevel'],
     comment: 'TOC style (nestedList|nestedOrderedList|inlineFirstLevel)',
   },
   minLevel: {
     type: 'number',
-    default: 0,
+    default: DEFAULT_OPTIONS.minLevel,
     comment: 'Include headings from the specified level',
   },
   maxLevel: {
     type: 'number',
-    default: 0,
+    default: DEFAULT_OPTIONS.maxLevel,
     comment: 'Include headings up to the specified level',
   },
   include: {
@@ -32,12 +34,12 @@ const availableOptions = {
   },
   includeLinks: {
     type: 'boolean',
-    default: true,
+    default: DEFAULT_OPTIONS.includeLinks,
     comment: 'Make headings clickable',
   },
   hideWhenEmpty: {
     type: 'boolean',
-    default: false,
+    default: DEFAULT_OPTIONS.hideWhenEmpty,
     comment: 'Hide TOC if no headings are found',
   },
   debugInConsole: {

@@ -1,4 +1,9 @@
 # https://github.com/pjeby/hot-reload
 .hotreload
+
 # Plugin settings
 data.json
+
+# Coverage
+coverage
+.nyc_output
