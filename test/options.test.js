@@ -13,6 +13,7 @@ describe('Options', () => {
       includeLinks: true,
       hideWhenEmpty: false,
       debugInConsole: false,
+      startAt: 0,
     })
   })
 
@@ -39,6 +40,7 @@ describe('Options', () => {
       includeLinks: false,
       hideWhenEmpty: true,
       debugInConsole: true,
+      startAt: 0,
     })
   })
 

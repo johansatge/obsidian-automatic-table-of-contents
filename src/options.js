@@ -47,6 +47,11 @@ const availableOptions = {
     default: false,
     comment: 'Print debug info in Obsidian console',
   },
+  startAt: {
+    type: 'number',
+    default: 0,
+    comment: 'Start TOC at the specified heading index (0 = first heading)',
+  },
 }
 
 module.exports = {
