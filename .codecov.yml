@@ -1,0 +1,20 @@
+coverage:
+  status:
+    project:
+      default:
+        target: auto
+        threshold: 1%
+    patch:
+      default:
+        target: 85%
+        threshold: 5%
+  ignore:
+    - "src/main.ts"       # Plugin lifecycle code - not testable in unit tests
+    - "src/settings.ts"   # UI components - not testable in unit tests
+    - "src/obsidian.ts"   # Runtime conditional imports - not testable in unit tests
+    - "build.ts"          # Build script
+    - "test/**"           # Test files themselves
+
+comment:
+  behavior: default
+  require_changes: false

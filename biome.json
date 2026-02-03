@@ -8,6 +8,9 @@
     "rules": {
       "correctness": {
         "noUndeclaredVariables": "error"
+      },
+      "suspicious": {
+        "noExplicitAny": "off"
       }
     }
   },
@@ -20,6 +23,14 @@
     }
   },
   "files": {
-    "ignore": ["./main.js"]
+    "ignoreUnknown": true,
+    "ignore": [
+      "./main.js",
+      "./coverage/**",
+      "./test/coverage/**",
+      "./.idea/**",
+      "**/*.css",
+      "**/*.html"
+    ]
   }
 }

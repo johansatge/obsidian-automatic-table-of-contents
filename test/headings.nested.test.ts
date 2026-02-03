@@ -1,11 +1,12 @@
-const {
+import { describe, expect, test } from '@jest/globals'
+import { getMarkdownFromHeadings } from '../src/headings.js'
+import { parseOptionsFromSourceText } from '../src/options.js'
+import {
   sanitizeMd,
-  testStandardHeadings,
-  testHeadingsWithoutFirstLevel,
   testHeadingsWithSpecialChars,
-} = require('./utils.js')
-const { getMarkdownFromHeadings } = require('../src/headings.js')
-const { parseOptionsFromSourceText } = require('../src/options.js')
+  testHeadingsWithoutFirstLevel,
+  testStandardHeadings,
+} from './utils.js'
 
 describe('Nested headings', () => {
   test('Returns indented list with links', () => {

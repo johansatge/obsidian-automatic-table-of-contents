@@ -1,4 +1,6 @@
-const { parseOptionsFromSourceText } = require('../src/options.js')
+import { describe, expect, test } from '@jest/globals'
+import { parseOptionsFromSourceText } from '../src/options.js'
+import type { PluginSettings } from '../src/options.js'
 
 describe('Options', () => {
   test('Returns default options if none are specified', () => {
@@ -70,7 +72,7 @@ describe('Options', () => {
         const options = parseOptionsFromSourceText('style: someInvalidStyle')
         expect(options.style).toEqual('Should have thrown')
       } catch (error) {
-        expect(error.message).toContain('Invalid value')
+        expect((error as Error).message).toContain('Invalid value')
       }
     })
     test('On minLevel', () => {
@@ -78,7 +80,7 @@ describe('Options', () => {
         const options = parseOptionsFromSourceText('minLevel: -1')
         expect(options.minLevel).toEqual('Should have thrown')
       } catch (error) {
-        expect(error.message).toContain('Invalid value')
+        expect((error as Error).message).toContain('Invalid value')
       }
     })
     test('On maxLevel', () => {
@@ -86,7 +88,7 @@ describe('Options', () => {
         const options = parseOptionsFromSourceText('maxLevel: -1')
         expect(options.maxLevel).toEqual('Should have thrown')
       } catch (error) {
-        expect(error.message).toContain('Invalid value')
+        expect((error as Error).message).toContain('Invalid value')
       }
     })
     test('On include', () => {
@@ -94,7 +96,7 @@ describe('Options', () => {
         const options = parseOptionsFromSourceText('include: [)')
         expect(options.include).toEqual('Should have thrown')
       } catch (error) {
-        expect(error.message).toContain('Invalid value')
+        expect((error as Error).message).toContain('Invalid value')
       }
     })
     test('On exclude', () => {
@@ -102,7 +104,7 @@ describe('Options', () => {
         const options = parseOptionsFromSourceText('exclude: /test')
         expect(options.exclude).toEqual('Should have thrown')
       } catch (error) {
-        expect(error.message).toContain('Invalid value')
+        expect((error as Error).message).toContain('Invalid value')
       }
     })
     test('On includeLinks', () => {
@@ -110,7 +112,7 @@ describe('Options', () => {
         const options = parseOptionsFromSourceText('includeLinks: no')
         expect(options.includeLinks).toEqual('Should have thrown')
       } catch (error) {
-        expect(error.message).toContain('Invalid value')
+        expect((error as Error).message).toContain('Invalid value')
       }
     })
     test('On hideWhenEmpty', () => {
@@ -118,7 +120,7 @@ describe('Options', () => {
         const options = parseOptionsFromSourceText('hideWhenEmpty: maybe')
         expect(options.hideWhenEmpty).toEqual('Should have thrown')
       } catch (error) {
-        expect(error.message).toContain('Invalid value')
+        expect((error as Error).message).toContain('Invalid value')
       }
     })
     test('On debugInConsole', () => {
@@ -126,14 +128,14 @@ describe('Options', () => {
         const options = parseOptionsFromSourceText('debugInConsole: yes')
         expect(options.debugInConsole).toEqual('Should have thrown')
       } catch (error) {
-        expect(error.message).toContain('Invalid value')
+        expect((error as Error).message).toContain('Invalid value')
       }
     })
   })
 
   describe('Plugin settings integration', () => {
     test('Uses plugin settings as defaults when provided', () => {
-      const pluginSettings = {
+      const pluginSettings: PluginSettings = {
         defaultTitle: '## Custom Title',
         defaultStyle: 'nestedOrderedList',
         defaultMinLevel: 2,
@@ -156,7 +158,7 @@ describe('Options', () => {
     })
 
     test('Allows codeblock to override plugin settings', () => {
-      const pluginSettings = {
+      const pluginSettings: PluginSettings = {
         defaultTitle: '## Custom Title',
         defaultStyle: 'nestedOrderedList',
         defaultMinLevel: 2,
@@ -182,7 +184,7 @@ describe('Options', () => {
     })
 
     test('Allows explicitly setting empty string to override plugin title', () => {
-      const pluginSettings = {
+      const pluginSettings: PluginSettings = {
         defaultTitle: '## Custom Title',
         defaultStyle: 'nestedList',
         defaultMinLevel: 0,

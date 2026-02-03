@@ -1,10 +1,19 @@
-const { isHeadingAllowed, getFormattedMarkdownHeading } = require('./markdown.js')
+import type { TableOfContentsOptions } from './defaults.js'
+import { getFormattedMarkdownHeading, isHeadingAllowed } from './markdown.js'
 
-module.exports = {
-  getMarkdownFromHeadings,
+interface ObsidianHeading {
+  heading: string
+  level: number
+  position?: {
+    start: { line: number; col: number; offset: number }
+    end: { line: number; col: number; offset: number }
+  }
 }
 
-function getMarkdownFromHeadings(headings, options) {
+export function getMarkdownFromHeadings(
+  headings: ObsidianHeading[],
+  options: TableOfContentsOptions,
+): string {
   const markdownHandlersByStyle = {
     nestedList: getMarkdownNestedListFromHeadings,
     nestedOrderedList: getMarkdownNestedOrderedListFromHeadings,
@@ -25,17 +34,27 @@ function getMarkdownFromHeadings(headings, options) {
   return titleMarkdown + markdownHeadings
 }
 
-function getMarkdownNestedListFromHeadings(headings, options) {
+function getMarkdownNestedListFromHeadings(
+  headings: ObsidianHeading[],
+  options: TableOfContentsOptions,
+): string | null {
   return getMarkdownListFromHeadings(headings, false, options)
 }
 
-function getMarkdownNestedOrderedListFromHeadings(headings, options) {
+function getMarkdownNestedOrderedListFromHeadings(
+  headings: ObsidianHeading[],
+  options: TableOfContentsOptions,
+): string | null {
   return getMarkdownListFromHeadings(headings, true, options)
 }
 
-function getMarkdownListFromHeadings(headings, isOrdered, options) {
+function getMarkdownListFromHeadings(
+  headings: ObsidianHeading[],
+  isOrdered: boolean,
+  options: TableOfContentsOptions,
+): string | null {
   const prefix = isOrdered ? '1.' : '-'
-  const lines = []
+  const lines: string[] = []
   const minLevel =
     options.minLevel > 0 ? options.minLevel : Math.min(...headings.map((heading) => heading.level))
   let unallowedLevel = 0
@@ -58,7 +77,10 @@ function getMarkdownListFromHeadings(headings, isOrdered, options) {
   return lines.length > 0 ? lines.join('\n') : null
 }
 
-function getMarkdownInlineFirstLevelFromHeadings(headings, options) {
+function getMarkdownInlineFirstLevelFromHeadings(
+  headings: ObsidianHeading[],
+  options: TableOfContentsOptions,
+): string | null {
   const minLevel =
     options.minLevel > 0 ? options.minLevel : Math.min(...headings.map((heading) => heading.level))
   const items = headings
