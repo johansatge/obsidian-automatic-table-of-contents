@@ -1,6 +1,17 @@
-const { DEFAULT_OPTIONS } = require('./defaults.js')
+import { DEFAULT_OPTIONS, type TableOfContentsOptions } from './defaults.js'
 
-const availableOptions = {
+interface OptionDefinition {
+  type: 'string' | 'value' | 'number' | 'boolean' | 'regexp'
+  default: string | number | boolean | null
+  values?: string[]
+  comment: string
+}
+
+type AvailableOptions = {
+  [K in keyof TableOfContentsOptions]: OptionDefinition
+}
+
+const availableOptions: AvailableOptions = {
   title: {
     type: 'string',
     default: DEFAULT_OPTIONS.title,
@@ -49,18 +60,26 @@ const availableOptions = {
   },
 }
 
-module.exports = {
-  getOptionsDocs,
-  parseOptionsFromSourceText,
+/**
+ * Plugin-level settings stored in Obsidian's data.json
+ */
+export interface PluginSettings {
+  defaultTitle: string
+  defaultStyle: 'nestedList' | 'nestedOrderedList' | 'inlineFirstLevel'
+  defaultMinLevel: number
+  defaultMaxLevel: number
+  defaultIncludeLinks: boolean
+  defaultHideWhenEmpty: boolean
 }
 
 /**
- * Get readable options to be inserted with the TOC command
- * @return {string}
+ * Get readable options documentation to be inserted with the TOC command
+ * Returns a formatted string with all available options and their defaults
+ * @returns Formatted options string with comments
  */
-function getOptionsDocs() {
-  const markdown = []
-  for (const optionName of Object.keys(availableOptions)) {
+export function getOptionsDocs(): string {
+  const markdown: string[] = []
+  for (const optionName of Object.keys(availableOptions) as Array<keyof TableOfContentsOptions>) {
     const option = availableOptions[optionName]
     const comment = option.comment.length > 0 ? ` # ${option.comment}` : ''
     const def = option.default !== null ? option.default : ''
@@ -70,16 +89,28 @@ function getOptionsDocs() {
 }
 
 /**
- * Get an options object from a source text (got from the TOC code block)
- * @param {string} sourceText
- * @param {Object} pluginSettings - Optional plugin settings to use as defaults
- * @return {Object}
+ * Parse table of contents options from codeblock source text
+ * Merges hardcoded defaults with plugin settings and codeblock overrides
+ * @param sourceText - Raw text content from the TOC code block
+ * @param pluginSettings - Optional plugin settings to use as defaults (from data.json)
+ * @returns Parsed and merged options object ready for use
+ * @throws {Error} When option values are invalid or malformed
  */
-function parseOptionsFromSourceText(sourceText = '', pluginSettings = null) {
+export function parseOptionsFromSourceText(
+  sourceText = '',
+  pluginSettings: PluginSettings | null = null,
+): TableOfContentsOptions {
   // Start with hardcoded defaults
-  const options = {}
-  for (const option of Object.keys(availableOptions)) {
-    options[option] = availableOptions[option].default
+  const options: TableOfContentsOptions = {
+    title: DEFAULT_OPTIONS.title,
+    style: DEFAULT_OPTIONS.style,
+    minLevel: DEFAULT_OPTIONS.minLevel,
+    maxLevel: DEFAULT_OPTIONS.maxLevel,
+    include: DEFAULT_OPTIONS.include,
+    exclude: DEFAULT_OPTIONS.exclude,
+    includeLinks: DEFAULT_OPTIONS.includeLinks,
+    hideWhenEmpty: DEFAULT_OPTIONS.hideWhenEmpty,
+    debugInConsole: DEFAULT_OPTIONS.debugInConsole,
   }
 
   // Apply plugin settings if available
@@ -96,24 +127,27 @@ function parseOptionsFromSourceText(sourceText = '', pluginSettings = null) {
   for (const line of sourceText.split('\n')) {
     const option = parseOptionFromSourceLine(line)
     if (option !== null) {
-      options[option.name] = option.value
+      ;(options as any)[option.name] = option.value
     }
   }
   return options
 }
 
+interface ParsedOption {
+  name: keyof TableOfContentsOptions
+  value: string | number | boolean | RegExp
+}
+
 /**
  * Parse an option from a source line
- * @param {string} line - The source line to parse (e.g., "optionName: value # comment")
- * @return {null|Object} Parsed option object or null if invalid
- * @property {string} name - The option name
- * @property {number|boolean|string|RegExp} value - The parsed value (type depends on option)
- * @throws {Error} When invalid value format detected for the option type
+ * @param line - The source line to parse (e.g., "optionName: value # comment")
+ * @return Parsed option object or null if invalid
+ * @throws Error when invalid value format detected for the option type
  */
-function parseOptionFromSourceLine(line) {
+function parseOptionFromSourceLine(line: string): ParsedOption | null {
   const matches = line.match(/([a-zA-Z0-9._ ]+):(.*)/)
-  if (line.startsWith('#') || !matches) return null
-  const possibleName = matches[1].trim()
+  if (line.startsWith('#') || !matches || !matches[1] || !matches[2]) return null
+  const possibleName = matches[1].trim() as keyof TableOfContentsOptions
   const optionParams = availableOptions[possibleName]
   let possibleValue = matches[2].trim()
   if (!optionParams || !['string', 'regexp'].includes(optionParams.type)) {
@@ -122,7 +156,7 @@ function parseOptionFromSourceLine(line) {
   }
   const valueError = new Error(`Invalid value for \`${possibleName}\``)
   if (optionParams && optionParams.type === 'number') {
-    const value = Number.parseInt(possibleValue)
+    const value = Number.parseInt(possibleValue, 10)
     if (value < 0) throw valueError
     return { name: possibleName, value }
   }
@@ -131,8 +165,8 @@ function parseOptionFromSourceLine(line) {
     return { name: possibleName, value: possibleValue === 'true' }
   }
   if (optionParams && optionParams.type === 'value') {
-    if (!optionParams.values.includes(possibleValue)) throw valueError
-    return { name: possibleName, value: possibleValue }
+    if (optionParams.values && !optionParams.values.includes(possibleValue)) throw valueError
+    return { name: possibleName, value: possibleValue as TableOfContentsOptions['style'] }
   }
   if (optionParams && optionParams.type === 'string') {
     // Allow explicitly setting empty string to override default
@@ -145,8 +179,8 @@ function parseOptionFromSourceLine(line) {
     if (possibleValue === 'null' || possibleValue.length === 0) return null
     try {
       const match = /^\/(.*)\/([a-z]*)/.exec(possibleValue)
-      if (!match) throw new Error('Invalid regexp')
-      const regexp = new RegExp(match[1], match[2])
+      if (!match || !match[1]) throw new Error('Invalid regexp')
+      const regexp = new RegExp(match[1], match[2] ?? '')
       return { name: possibleName, value: regexp }
     } catch {
       throw valueError

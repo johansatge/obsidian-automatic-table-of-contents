@@ -1,5 +1,6 @@
-const { getMarkdownFromHeadings } = require('../src/headings.js')
-const { parseOptionsFromSourceText } = require('../src/options.js')
+import { describe, expect, test } from '@jest/globals'
+import { getMarkdownFromHeadings } from '../src/headings.js'
+import { parseOptionsFromSourceText } from '../src/options.js'
 
 describe('Headings', () => {
   test('Returns default message if no headings', () => {

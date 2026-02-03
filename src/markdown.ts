@@ -1,17 +1,13 @@
-const { htmlToMarkdown } = require('./obsidian.js')
-
-module.exports = {
-  isHeadingAllowed,
-  getFormattedMarkdownHeading,
-}
+import type { TableOfContentsOptions } from './defaults.js'
+import { htmlToMarkdown } from './obsidian.js'
 
 /**
- * Check if given heading is allowed depending on options
- * @param {string} label
- * @param {object} options
- * @return {boolean}
+ * Check if a heading should be included based on include/exclude filters
+ * @param label - The heading text to check against filters
+ * @param options - Configuration options containing include/exclude patterns
+ * @returns True if the heading passes the filters and should be included
  */
-function isHeadingAllowed(label, options) {
+export function isHeadingAllowed(label: string, options: TableOfContentsOptions): boolean {
   if (options.include) {
     return options.include.test(label)
   }
@@ -23,11 +19,14 @@ function isHeadingAllowed(label, options) {
 
 /**
  * Get formatted markdown for the given label (either the label itself, or a sanitized link)
- * @param {string} label - The raw label, might contain Markdown
- * @param {object} options - Global options object
- * @return {string}
+ * @param label - The raw label, might contain Markdown
+ * @param options - Global options object
+ * @return Formatted markdown string
  */
-function getFormattedMarkdownHeading(label, options) {
+export function getFormattedMarkdownHeading(
+  label: string,
+  options: TableOfContentsOptions,
+): string {
   if (options.includeLinks) {
     // Remove markdown, HTML & wikilinks from text for readability, as they are not rendered in a wikilink
     let text = label
@@ -56,7 +55,7 @@ function getFormattedMarkdownHeading(label, options) {
   return label
 }
 
-function stripMarkdown(text) {
+function stripMarkdown(text: string): string {
   return text
     .replaceAll('*', '')
     .replaceAll(/(\W|^)_+(\S)(.*?\S)?_+(\W|$)/g, '$1$2$3$4')
@@ -66,11 +65,11 @@ function stripMarkdown(text) {
     .replace(/\[([^\]]+)\]\([^)]+\)/g, '$1') // Strip markdown links
 }
 
-function stripHtml(text) {
+function stripHtml(text: string): string {
   return stripMarkdown(htmlToMarkdown(text))
 }
 
-function stripWikilinks(text, isForLink) {
+function stripWikilinks(text: string, isForLink: boolean): string {
   // Strip [[link|text]] format
   // For the text part of the final link we only keep "text"
   // For the link part we need the text + link
@@ -86,6 +85,6 @@ function stripWikilinks(text, isForLink) {
   )
 }
 
-function stripTags(text) {
+function stripTags(text: string): string {
   return text.replaceAll('#', ' ')
 }
