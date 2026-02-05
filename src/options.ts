@@ -62,7 +62,11 @@ const availableOptions: AvailableOptions = {
 
 export interface PluginSettings {
   defaultTitle: string
-  defaultStyle: 'nestedList' | 'nestedOrderedList' | 'nestedDetailedOrderedList' | 'inlineFirstLevel'
+  defaultStyle:
+    | 'nestedList'
+    | 'nestedOrderedList'
+    | 'nestedDetailedOrderedList'
+    | 'inlineFirstLevel'
   defaultMinLevel: number
   defaultMaxLevel: number
   defaultIncludeLinks: boolean
