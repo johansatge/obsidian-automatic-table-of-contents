@@ -9,8 +9,8 @@ const availableOptions = {
   style: {
     type: 'value',
     default: DEFAULT_OPTIONS.style,
-    values: ['nestedList', 'nestedOrderedList', 'inlineFirstLevel'],
-    comment: 'TOC style (nestedList|nestedOrderedList|inlineFirstLevel)',
+    values: ['nestedList', 'nestedOrderedList', 'nestedDetailedOrderedList', 'inlineFirstLevel'],
+    comment: 'TOC style (nestedList|nestedOrderedList|nestedDetailedOrderedList|inlineFirstLevel)',
   },
   minLevel: {
     type: 'number',

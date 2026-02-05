@@ -68,7 +68,7 @@ The following options are available:
 | Option | Default value | Description |
 | --- | --- | --- |
 | `title` | _None_ | Title to display before the table of contents (supports Markdown) |
-| `style` | `nestedList` | Table of contents style (can be `nestedList`, `nestedOrderedList` or `inlineFirstLevel`) |
+| `style` | `nestedList` | Table of contents style (can be `nestedList`, `nestedOrderedList`, `nestedDetailedOrderedList` or `inlineFirstLevel`) |
 | `minLevel` | `0` | Include headings from the specified level  (`0` for no limit) |
 | `maxLevel` | `0` | Include headings up to the specified level (`0` for no limit) |
 | `include` | _All_ | Include headings with a [regexp](https://en.wikipedia.org/wiki/Regular_expression) (example: `/Some heading/i`) |
