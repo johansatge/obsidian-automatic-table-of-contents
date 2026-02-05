@@ -1,6 +1,6 @@
 export interface TableOfContentsOptions {
   title: string
-  style: 'nestedList' | 'nestedOrderedList' | 'inlineFirstLevel'
+  style: 'nestedList' | 'nestedOrderedList' | 'nestedDetailedOrderedList' | 'inlineFirstLevel'
   minLevel: number
   maxLevel: number
   include: RegExp | null

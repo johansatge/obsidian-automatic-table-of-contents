@@ -67,6 +67,7 @@ export class SettingsTab extends PluginSettingTab {
             dropdown
               .addOption('nestedList', 'Nested List')
               .addOption('nestedOrderedList', 'Nested Ordered List')
+              .addOption('nestedDetailedOrderedList', 'Nested Detailed Ordered List')
               .addOption('inlineFirstLevel', 'Inline First Level')
               .setValue(this.plugin.settings.defaultStyle)
               .onChange(async (value: string) => {
