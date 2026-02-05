@@ -1,7 +1,14 @@
-const { PluginSettingTab, Setting, SettingGroup } = require('./obsidian.js')
-const { DEFAULT_OPTIONS } = require('./defaults.js')
+import { DEFAULT_OPTIONS } from './defaults.js'
+import { PluginSettingTab, SettingGroup } from './obsidian.js'
+import type { PluginSettings } from './options.js'
 
-const DEFAULT_SETTINGS = {
+// These types are conditional based on runtime environment
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+type App = any
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+type Plugin = any
+
+export const DEFAULT_SETTINGS: PluginSettings = {
   defaultTitle: DEFAULT_OPTIONS.title,
   defaultStyle: DEFAULT_OPTIONS.style,
   defaultMinLevel: DEFAULT_OPTIONS.minLevel,
@@ -10,67 +17,73 @@ const DEFAULT_SETTINGS = {
   defaultHideWhenEmpty: DEFAULT_OPTIONS.hideWhenEmpty,
 }
 
-class SettingsTab extends PluginSettingTab {
-  constructor(app, plugin) {
+export class SettingsTab extends PluginSettingTab {
+  plugin: Plugin & { settings: PluginSettings; saveSettings: () => Promise<void> }
+
+  constructor(
+    app: App,
+    plugin: Plugin & { settings: PluginSettings; saveSettings: () => Promise<void> },
+  ) {
     super(app, plugin)
     this.plugin = plugin
   }
 
-  display() {
+  display(): void {
     const { containerEl } = this
 
     containerEl.empty()
 
     const heading = document.createDocumentFragment()
-    heading.createDiv({ cls: 'setting-item-name', text: 'Default options' })
-    heading.createDiv({
+    ;(heading as any).createDiv({ cls: 'setting-item-name', text: 'Default options' })
+    ;(heading as any).createDiv({
       cls: 'setting-item-description',
       text: 'Configure default options. They can be overridden per codeblock when inserting the table of contents in a page.',
     })
 
+    // Using any types for Obsidian UI components since they're not fully typed
     new SettingGroup(containerEl)
       .setHeading(heading)
-      .addSetting((setting) =>
+      .addSetting((setting: any) =>
         setting
           .setName('Title')
           .setDesc(
             'Title to display before the table of contents (supports Markdown). Use empty string for no title.',
           )
-          .addText((text) =>
+          .addText((text: any) =>
             text
               .setPlaceholder('')
               .setValue(this.plugin.settings.defaultTitle)
-              .onChange(async (value) => {
+              .onChange(async (value: string) => {
                 this.plugin.settings.defaultTitle = value
                 await this.plugin.saveSettings()
               }),
           ),
       )
-      .addSetting((setting) =>
+      .addSetting((setting: any) =>
         setting
           .setName('Style')
           .setDesc('Table of contents style')
-          .addDropdown((dropdown) =>
+          .addDropdown((dropdown: any) =>
             dropdown
               .addOption('nestedList', 'Nested List')
               .addOption('nestedOrderedList', 'Nested Ordered List')
               .addOption('inlineFirstLevel', 'Inline First Level')
               .setValue(this.plugin.settings.defaultStyle)
-              .onChange(async (value) => {
-                this.plugin.settings.defaultStyle = value
+              .onChange(async (value: string) => {
+                this.plugin.settings.defaultStyle = value as PluginSettings['defaultStyle']
                 await this.plugin.saveSettings()
               }),
           ),
       )
-      .addSetting((setting) =>
+      .addSetting((setting: any) =>
         setting
           .setName('Minimum level')
           .setDesc('Include headings from the specified level (0 for no limit)')
-          .addText((text) =>
+          .addText((text: any) =>
             text
               .setPlaceholder('0')
               .setValue(String(this.plugin.settings.defaultMinLevel))
-              .onChange(async (value) => {
+              .onChange(async (value: string) => {
                 const numValue = Number.parseInt(value)
                 if (!Number.isNaN(numValue) && numValue >= 0) {
                   this.plugin.settings.defaultMinLevel = numValue
@@ -82,15 +95,15 @@ class SettingsTab extends PluginSettingTab {
               }),
           ),
       )
-      .addSetting((setting) =>
+      .addSetting((setting: any) =>
         setting
           .setName('Maximum level')
           .setDesc('Include headings up to the specified level (0 for no limit)')
-          .addText((text) =>
+          .addText((text: any) =>
             text
               .setPlaceholder('0')
               .setValue(String(this.plugin.settings.defaultMaxLevel))
-              .onChange(async (value) => {
+              .onChange(async (value: string) => {
                 const numValue = Number.parseInt(value)
                 if (!Number.isNaN(numValue) && numValue >= 0) {
                   this.plugin.settings.defaultMaxLevel = numValue
@@ -102,32 +115,31 @@ class SettingsTab extends PluginSettingTab {
               }),
           ),
       )
-      .addSetting((setting) =>
+      .addSetting((setting: any) =>
         setting
           .setName('Include links')
           .setDesc('Make headings clickable')
-          .addToggle((toggle) =>
-            toggle.setValue(this.plugin.settings.defaultIncludeLinks).onChange(async (value) => {
-              this.plugin.settings.defaultIncludeLinks = value
-              await this.plugin.saveSettings()
-            }),
+          .addToggle((toggle: any) =>
+            toggle
+              .setValue(this.plugin.settings.defaultIncludeLinks)
+              .onChange(async (value: boolean) => {
+                this.plugin.settings.defaultIncludeLinks = value
+                await this.plugin.saveSettings()
+              }),
           ),
       )
-      .addSetting((setting) =>
+      .addSetting((setting: any) =>
         setting
           .setName('Hide when empty')
           .setDesc('Hide TOC if no headings are found')
-          .addToggle((toggle) =>
-            toggle.setValue(this.plugin.settings.defaultHideWhenEmpty).onChange(async (value) => {
-              this.plugin.settings.defaultHideWhenEmpty = value
-              await this.plugin.saveSettings()
-            }),
+          .addToggle((toggle: any) =>
+            toggle
+              .setValue(this.plugin.settings.defaultHideWhenEmpty)
+              .onChange(async (value: boolean) => {
+                this.plugin.settings.defaultHideWhenEmpty = value
+                await this.plugin.saveSettings()
+              }),
           ),
       )
   }
-}
-
-module.exports = {
-  DEFAULT_SETTINGS,
-  SettingsTab,
 }

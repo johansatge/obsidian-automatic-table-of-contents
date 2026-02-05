@@ -25,6 +25,8 @@ jobs:
         run: npm ci
       - name: Run biome
         run: npm run biome-ci
+      - name: Run TypeScript type check
+        run: npm run type-check
       - name: Run jest with coverage
         run: npm run jest:coverage
       - name: Upload coverage to Codecov

@@ -1,6 +1,7 @@
-const { sanitizeMd, testStandardHeadings, testHeadingsWithoutFirstLevel } = require('./utils.js')
-const { getMarkdownFromHeadings } = require('../src/headings.js')
-const { parseOptionsFromSourceText } = require('../src/options.js')
+import { describe, expect, test } from '@jest/globals'
+import { getMarkdownFromHeadings } from '../src/headings.js'
+import { parseOptionsFromSourceText } from '../src/options.js'
+import { sanitizeMd, testHeadingsWithoutFirstLevel, testStandardHeadings } from './utils.js'
 
 describe('First-level headings', () => {
   test('Returns flat first-level list with links', () => {
