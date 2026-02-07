@@ -1,4 +1,4 @@
-import { describe, expect, test } from '@jest/globals'
+import { describe, expect, test } from 'vitest'
 import type { TableOfContentsOptions } from '../src/defaults.js'
 import { getFormattedMarkdownHeading, isHeadingAllowed } from '../src/markdown.js'
 
