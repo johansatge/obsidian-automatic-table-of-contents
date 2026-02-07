@@ -106,6 +106,7 @@ This project uses [semver](http://semver.org/).
 
 | Version | Date | Notes |
 | --- | --- | --- |
+| `1.8.0` | 2026-02-07 | Introduce global settings ([@stevedoyle](https://github.com/stevedoyle)) (fix #38, #83) |
 | `1.7.3` | 2025-05-25 | Fix default `include` & `exclude` values (fix #73) |
 | `1.7.2` | 2025-05-03 | Fix italic stripping (fix #43) |
 | `1.7.1` | 2025-05-02 | Fix `#` in wikilinks (fix #64) |
