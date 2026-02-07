@@ -1,4 +1,4 @@
-import { describe, expect, test } from '@jest/globals'
+import { describe, expect, test } from 'vitest'
 import { getMarkdownFromHeadings } from '../src/headings.js'
 import { parseOptionsFromSourceText } from '../src/options.js'
 
